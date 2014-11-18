@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">DorMApp</string>
+    
+    <string name="title_sectionUebersicht">Übersicht</string>
+    <string name="title_sectionEinkaufslist">Einkaufsliste</string>
+    <string name="title_sectionPutzplan">Putzplan</string>
+    <string name="title_sectionBlackboard">Blackboard</string>
+    <string name="title_sectionKalender">Kalender</string>
+    
+    <string name="action_settings">Einstellungen</string>
+	<string name="action_sync">Sync</string>
+    <string name="action_login">Login</string>
+</resources>

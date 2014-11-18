@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="wifi_connection">The active connection is wifi.</string>
+    <string name="mobile_connection">The active connection is mobile.</string>
+    <string name="no_wifi_or_mobile">No wireless or mobile connection.</string>
+</resources>

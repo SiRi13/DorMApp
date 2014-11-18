@@ -1,0 +1,50 @@
+<resources>
+
+    <string name="app_name">EMA_CustomViews</string>
+    
+    <string-array name="currencies">
+        <item>EUR (€)</item>
+        <item>GBP (£)</item>
+        <item>BGN (лв)</item>
+        <item>DKK (dkr.)</item>
+        <item>LVL (Ls)</item>
+        <item>LTL (Lt)</item>
+        <item>PLN (zł)</item>
+        <item>RON (RON)</item>
+        <item>SEK (Skr)</item>
+        <item>CZK (Kč)</item>
+        <item>HUF (Ft)</item> 
+    </string-array>
+    
+    <string-array name="currencies_usd">
+        <item>EUR (€)</item>
+        <item>USD ($)</item>
+        <item>GBP (£)</item>
+        <item>BGN (лв)</item>
+        <item>DKK (dkr.)</item>
+        <item>LVL (Ls)</item>
+        <item>LTL (Lt)</item>
+        <item>PLN (zł)</item>
+        <item>RON (RON)</item>
+        <item>SEK (Skr)</item>
+        <item>CZK (Kč)</item>
+        <item>HUF (Ft)</item> 
+    </string-array>
+    
+    <string name="all">All</string>
+    <string name="selected">Selected</string>
+    <string name="moveUpButton">↑</string>
+    <string name="moveDownButton">↓</string>
+    
+    <string name="button_1">1</string>
+    <string name="button_2">2</string>
+    <string name="button_3">3</string>
+    <string name="button_4">4</string>
+    <string name="button_5">5</string>
+    <string name="button_6">6</string>
+    <string name="button_7">7</string>
+    <string name="button_8">8</string>
+    <string name="button_9">9</string>
+    <string name="button_0">0</string>
+    <string name="button_dot">.</string>
+</resources>

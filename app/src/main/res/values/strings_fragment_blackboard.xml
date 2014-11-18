@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="btnHinzufuegenBlackboard"> Hinzufügen</string>
+    <string name="btnLoeschenBlackboard">Löschen</string>
+    <string name="textNeuerEintrag">Neuer Blackboard-Eintrag</string>
+    
+    
+    <!-- edit -->
+    <string name="textBlackboardEditHint">Eintrag bearbeiten</string>
+    <string-array name="arrayTestMsgs">
+        <item >erste Nachricht</item>
+        <item >zweite Nachricht</item>
+    </string-array>
+        <string name="RowDelete">Löschen</string>
+</resources>
