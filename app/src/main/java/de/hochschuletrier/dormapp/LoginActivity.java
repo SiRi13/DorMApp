@@ -316,20 +316,6 @@ public class LoginActivity extends Activity {
 //        private ProgressDialog pDialog;
         private UserHandler userFunction = new UserHandler();
         
-/* Code not necessary anymore      
- * 
-        @Override
-        protected void onPreExecute()
-        {
-            super.onPreExecute();
-            pDialog = new ProgressDialog(LoginActivity.this);
-            pDialog.setTitle("Contacting Servers");
-            pDialog.setMessage("Logging in ...");
-            pDialog.setIndeterminate(false);
-            pDialog.setCancelable(true);
-            pDialog.show();
-        }
-*/
         @Override
         protected JSONObject doInBackground(String... args)
         {

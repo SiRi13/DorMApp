@@ -113,10 +113,6 @@ public class MainActivity extends Activity implements ActionBar.TabListener
             actionBar.addTab(actionBar.newTab().setText(mSectionsPagerAdapter.getPageTitle(i)).setTabListener(this));
         }
 
-/*
-        initializeLogging();
-*/
-
         initApp();
     }
 
@@ -157,7 +153,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener
         }
         else {
             Toast.makeText(getApplicationContext(),
-                    "Leider keine aktive Internetverbindung gefunden. Später noch mal versuchen",
+                    "Leider keine aktive Internetverbindung gefunden. Bitte später noch mal versuchen",
                     Toast.LENGTH_LONG).show();
         }
     }

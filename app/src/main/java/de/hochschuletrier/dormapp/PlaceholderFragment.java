@@ -81,7 +81,7 @@ public class PlaceholderFragment extends Fragment
             case 3:
                 // Blackboard
                 rootView = inflater.inflate(R.layout.fragment_blackboard, container, false);
-                ((BlackboardListView) rootView.findViewById(R.id.blackboardList)).setAdapter(new ArrayAdapter<Object>(rootView.getContext(), android.R.layout.two_line_list_item, new String[] { "Nachricht Eins", "Nachricht Zwei", "Nachricht Drei" }));
+                ((BlackboardListView) rootView.findViewById(R.id.blackboardList)).setAdapter(new ArrayAdapter<Object>(rootView.getContext(), android.R.layout.simple_list_item_multiple_choice, new String[] { "Nachricht Eins", "Nachricht Zwei", "Nachricht Drei" }));
                 break;
             default:
                 // back to main
