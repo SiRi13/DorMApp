@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/DorMApp.iml" filepath="$PROJECT_DIR$/DorMApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/dbconnectionlib/dbconnectionlib.iml" filepath="$PROJECT_DIR$/dbconnectionlib/dbconnectionlib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dormappsyncservice/dormappsyncservice.iml" filepath="$PROJECT_DIR$/dormappsyncservice/dormappsyncservice.iml" />
       <module fileurl="file://$PROJECT_DIR$/secure-preferences/library/library.iml" filepath="$PROJECT_DIR$/secure-preferences/library/library.iml" />
     </modules>
   </component>

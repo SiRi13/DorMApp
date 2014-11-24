@@ -36,8 +36,7 @@ import de.hochschuletrier.dormapp.common.InitAppSync;
 import de.hochschuletrier.dormapp.common.Log;
 import de.hochschuletrier.dormapp.common.LogFragment;
 
-public class MainActivity extends Activity implements ActionBar.TabListener
-{
+public class MainActivity extends Activity implements ActionBar.TabListener {
 
     public static final String TAG_PREFIX = "de.hochschuletrier.dormapp.";
     public static final String TAG = TAG_PREFIX + "MainActivity";
@@ -70,11 +69,11 @@ public class MainActivity extends Activity implements ActionBar.TabListener
     protected static SecurePreferences secPrefs;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // create new securePreferences if not there
         if (secPrefs == null) {
             secPrefs = new SecurePreferences(this);
         }
@@ -94,18 +93,15 @@ public class MainActivity extends Activity implements ActionBar.TabListener
         // When swiping between different sections, select the corresponding
         // tab. We can also use ActionBar.Tab#select() to do this if we have
         // a reference to the Tab.
-        mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener()
-        {
+        mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
-            public void onPageSelected(int position)
-            {
+            public void onPageSelected(int position) {
                 actionBar.setSelectedNavigationItem(position);
             }
         });
 
         // For each of the sections in the app, add a tab to the action bar.
-        for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++)
-        {
+        for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
             // Create a tab with text corresponding to the page title defined by
             // the adapter. Also specify this Activity object, which implements
             // the TabListener interface, as the callback (listener) for when
@@ -117,14 +113,18 @@ public class MainActivity extends Activity implements ActionBar.TabListener
     }
 
     private void initApp() {
+        // get logged in user creds if there are any
         MainActivity.loggedIn =  UserHandler.loggedInUser(getSecPrefs());
 
+        // check if s/o is logged in ...
         if (loggedIn == null || loggedIn.isEmpty()) {
+            // ... if not goto login fragment
             initLogin();
         }
         else {
-
+            // ... sync for init ( e.g. who, what chores or new entries )
             InitAppSync initApp = new InitAppSync(this, getSecPrefs(), loggedIn);
+            // create params to put as post-request payload
             List<BasicNameValuePair> postParams = new ArrayList<BasicNameValuePair>();
             postParams.add(new BasicNameValuePair("tag", ConnectionConstants.SYNC_TAG));
             postParams.add(new BasicNameValuePair("email", loggedIn.getEmail()));
@@ -137,9 +137,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener
 
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-
+    public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
@@ -159,15 +157,12 @@ public class MainActivity extends Activity implements ActionBar.TabListener
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
+    public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        switch(id)
-        {
-
+        switch(id) {
             case R.id.itmLogin:
                 initLogin();
                 break;
@@ -186,40 +181,37 @@ public class MainActivity extends Activity implements ActionBar.TabListener
     }
 
     @Override
-    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction)
-    {
+    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
         // When the given tab is selected, switch to the corresponding page in
         // the ViewPager.
         mViewPager.setCurrentItem(tab.getPosition());
     }
 
     @Override
-    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction)
-    {
+    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+        // EMPTY
     }
 
     @Override
-    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction)
-    {
+    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+        // EMPTY
     }
 
-
-    public void onBlackboardEditItem(final String editMsg) {
-        //TODO
-        final Intent blackboardEditMsgIntent = new Intent(this, BlackboardFragmentActivity.class);
-        blackboardEditMsgIntent.putExtra(BlackboardFragmentActivity.BLACKBOARD_EDIT_TEXT, editMsg);
-        startActivityForResult(blackboardEditMsgIntent, Constants.BLACKBOARD_ACTIVITY_REQUEST_CODE);
-    }
+//    public void onBlackboardEditItem(final String editMsg) {
+//        //TODO
+//        final Intent blackboardEditMsgIntent = new Intent(this, BlackboardFragmentActivity.class);
+//        blackboardEditMsgIntent.putExtra(BlackboardFragmentActivity.BLACKBOARD_EDIT_TEXT, editMsg);
+//        startActivityForResult(blackboardEditMsgIntent, Constants.BLACKBOARD_ACTIVITY_REQUEST_CODE);
+//    }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        switch (requestCode)
-        {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
             case Constants.BLACKBOARD_ACTIVITY_REQUEST_CODE:
                 if (resultCode == Constants.ACTIVITY_RESULT_OK) {
                     // TODO
                 }
-                else if (resultCode == Constants.ACTIVITY_RESULT_ERROR){
+                else if (resultCode == Constants.ACTIVITY_RESULT_ERROR) {
                     // TODO SOMETHING HAPPENED
                 }
                 break;
@@ -227,9 +219,9 @@ public class MainActivity extends Activity implements ActionBar.TabListener
             case Constants.LOGIN_ACTIVITY_REQUEST_CODE:
                 if (resultCode == Constants.ACTIVITY_RESULT_OK) {
                     // TODO
-                    initApp();
+                    this.recreate();
                 }
-                else if (resultCode == Constants.ACTIVITY_RESULT_ERROR){
+                else if (resultCode == Constants.ACTIVITY_RESULT_ERROR) {
                     // TODO SOMETHING HAPPENED
                 }
                 break;
@@ -271,17 +263,14 @@ public class MainActivity extends Activity implements ActionBar.TabListener
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter
-    {
+    public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        public SectionsPagerAdapter(FragmentManager fm)
-        {
+        public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
         @Override
-        public Fragment getItem(int position)
-        {
+        public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class
             // below).
@@ -289,18 +278,15 @@ public class MainActivity extends Activity implements ActionBar.TabListener
         }
 
         @Override
-        public int getCount()
-        {
+        public int getCount() {
             // Show 5 total pages.
             return 5;
         }
 
         @Override
-        public CharSequence getPageTitle(int position)
-        {
+        public CharSequence getPageTitle(int position) {
             Locale l = Locale.getDefault();
-            switch (position)
-            {
+            switch (position) {
                 case 0:
                     return getString(R.string.title_sectionUebersicht).toUpperCase(l);
                 case 1:

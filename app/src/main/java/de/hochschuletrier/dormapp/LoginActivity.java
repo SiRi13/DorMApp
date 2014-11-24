@@ -72,8 +72,7 @@ public class LoginActivity extends Activity {
     private Intent resultIntent;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_login);
@@ -84,13 +83,10 @@ public class LoginActivity extends Activity {
         mEmailView.setText(mEmail);
 
         mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener()
-        {
+        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent)
-            {
-                if (id == R.id.login || id == EditorInfo.IME_NULL)
-                {
+            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+                if (id == R.id.login || id == EditorInfo.IME_NULL) {
                     attemptLogin();
                     return true;
                 }
@@ -102,11 +98,9 @@ public class LoginActivity extends Activity {
         mLoginStatusView = findViewById(R.id.login_status);
         mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
 
-        findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener()
-        {
+        findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 attemptLogin();
             }
         });
@@ -116,8 +110,7 @@ public class LoginActivity extends Activity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
+    public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.login, menu);
         return true;
@@ -128,10 +121,8 @@ public class LoginActivity extends Activity {
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
-    public void attemptLogin()
-    {
-        if (mAuthTask != null)
-        {
+    public void attemptLogin() {
+        if (mAuthTask != null) {
             return;
         }
 
@@ -147,41 +138,35 @@ public class LoginActivity extends Activity {
         View focusView = null;
 
         // Check for a valid password.
-        if (TextUtils.isEmpty(mPassword))
-        {
+        if (TextUtils.isEmpty(mPassword)) {
             mPasswordView.setError(getString(R.string.error_field_required));
             focusView = mPasswordView;
             cancel = true;
         }
-        else if (mPassword.length() < 4)
-        {
+        else if (mPassword.length() < 4) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
         }
 
         // Check for a valid email address.
-        if (TextUtils.isEmpty(mEmail))
-        {
+        if (TextUtils.isEmpty(mEmail)) {
             mEmailView.setError(getString(R.string.error_field_required));
             focusView = mEmailView;
             cancel = true;
         }
-        else if (!mEmail.contains("@"))
-        {
+        else if (!mEmail.contains("@")) {
             mEmailView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
             cancel = true;
         }
 
-        if (cancel)
-        {
+        if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
             focusView.requestFocus();
         }
-        else
-        {
+        else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
@@ -195,37 +180,30 @@ public class LoginActivity extends Activity {
      * Shows the progress UI and hides the login form.
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    private void showProgress(final boolean show)
-    {
+    private void showProgress(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
         // for very easy animations. If available, use these APIs to fade-in
         // the progress spinner.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2)
-        {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
             mLoginStatusView.setVisibility(View.VISIBLE);
-            mLoginStatusView.animate().setDuration(shortAnimTime).alpha(show ? 1 : 0).setListener(new AnimatorListenerAdapter()
-            {
+            mLoginStatusView.animate().setDuration(shortAnimTime).alpha(show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
                 @Override
-                public void onAnimationEnd(Animator animation)
-                {
+                public void onAnimationEnd(Animator animation) {
                     mLoginStatusView.setVisibility(show ? View.VISIBLE : View.GONE);
                 }
             });
 
             mLoginFormView.setVisibility(View.VISIBLE);
-            mLoginFormView.animate().setDuration(shortAnimTime).alpha(show ? 0 : 1).setListener(new AnimatorListenerAdapter()
-            {
+            mLoginFormView.animate().setDuration(shortAnimTime).alpha(show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
                 @Override
-                public void onAnimationEnd(Animator animation)
-                {
+                public void onAnimationEnd(Animator animation) {
                     mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
                 }
             });
         }
-        else
-        {
+        else {
             // The ViewPropertyAnimator APIs are not available, so simply show
             // and hide the relevant UI components.
             mLoginStatusView.setVisibility(show ? View.VISIBLE : View.GONE);
@@ -237,11 +215,9 @@ public class LoginActivity extends Activity {
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean>
-    {
+    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
         @Override
-        protected Boolean doInBackground(Void... params)
-        {
+        protected Boolean doInBackground(Void... params) {
             // attempt authentication against a network service.
             ProcessLogin procLogin = new ProcessLogin();
             procLogin.execute();
@@ -283,8 +259,7 @@ public class LoginActivity extends Activity {
         }
 
         @Override
-        protected void onPostExecute(final Boolean success)
-        {
+        protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
             showProgress(false);
 
@@ -302,8 +277,7 @@ public class LoginActivity extends Activity {
         }
 
         @Override
-        protected void onCancelled()
-        {
+        protected void onCancelled() {
             mAuthTask = null;
             showProgress(false);
         }
@@ -311,36 +285,29 @@ public class LoginActivity extends Activity {
     /**
      * Async Task to get and send data to My Sql database through JSON response.
      **/
-    private class ProcessLogin extends AsyncTask<String, Boolean, JSONObject>
-    {
+    private class ProcessLogin extends AsyncTask<String, Boolean, JSONObject> {
 //        private ProgressDialog pDialog;
         private UserHandler userFunction = new UserHandler();
         
         @Override
-        protected JSONObject doInBackground(String... args)
-        {
+        protected JSONObject doInBackground(String... args) {
             JSONObject json = userFunction.loginUser(mEmail, mPassword);
             return json;
         }
         
         @Override
-        protected void onCancelled()
-        {
+        protected void onCancelled() {
             super.onCancelled();
         }
 
         @Override
-        protected void onPostExecute(JSONObject json)
-        {
-            try
-            {
-                if (json != null && json.getString(Constants.KEY_SUCCESS) != null)
-                {
+        protected void onPostExecute(JSONObject json) {
+            try {
+                if (json != null && json.getString(Constants.KEY_SUCCESS) != null) {
                     Intent upanel = new Intent(getApplicationContext(), MainActivity.class);
                     upanel.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     String res = json.getString(Constants.KEY_SUCCESS);
-                    if (Integer.parseInt(res) == 1)
-                    {
+                    if (Integer.parseInt(res) == 1) {
 /*                        pDialog.setMessage("Loading User Space");
                         pDialog.setTitle("Getting Data");*/
 
@@ -375,8 +342,7 @@ public class LoginActivity extends Activity {
                          **/
                         
                     }
-                    else
-                    {
+                    else {
                         upanel.putExtra(Constants.LOGIN_RESULT, Boolean.FALSE);
                         upanel.putExtra(Constants.LOGIN_MESSAGE, "Your credentials are invalid! or something else, idk :3");
                         this.cancel(true);
@@ -386,8 +352,7 @@ public class LoginActivity extends Activity {
                     }
                 }
             }
-            catch (JSONException e)
-            {
+            catch (JSONException e) {
                 e.printStackTrace();
             }
         }

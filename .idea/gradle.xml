@@ -11,6 +11,7 @@
             <option value="$PROJECT_DIR$/CustomViews" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/dbconnectionlib" />
+            <option value="$PROJECT_DIR$/dormappsyncservice" />
             <option value="$PROJECT_DIR$/secure-preferences" />
             <option value="$PROJECT_DIR$/secure-preferences/library" />
           </set>

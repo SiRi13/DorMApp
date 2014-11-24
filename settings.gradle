@@ -1,1 +1,1 @@
-include ':app', ':dbconnectionlib', ':CustomViews', ':secure-preferences:library'
+include ':app', ':CustomViews', ':dormappsyncservice', ':dbconnectionlib', ':secure-preferences:library'

@@ -18,6 +18,8 @@ import de.hochschuletrier.dormapp.R;
 
 /**
  * Created by simon on 11/16/14.
+ *
+ * TODO: move to service!!
  */
 public class InitAppSync extends RemoteSync {
 

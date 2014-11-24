@@ -7,14 +7,12 @@ import android.widget.EditText;
 
 import de.hochschuletrier.dormapp.common.Constants;
 
-public class BlackboardFragmentActivity extends FragmentActivity
-{
+public class BlackboardFragmentActivity extends FragmentActivity {
 
     public static final String BLACKBOARD_EDIT_TEXT = "de.hstrier.livingcommunity.blackboard_edit_text";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_blackboard_edit);
         Intent editIntent = getIntent();
