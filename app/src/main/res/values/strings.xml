@@ -9,7 +9,7 @@
     <string name="title_sectionBlackboard">Blackboard</string>
     <string name="title_sectionKalender">Kalender</string>
     
-    <string name="action_settings">Einstellungen</string>
 	<string name="action_sync">Sync</string>
     <string name="action_login">Login</string>
+    <string name="action_test">Test</string>
 </resources>

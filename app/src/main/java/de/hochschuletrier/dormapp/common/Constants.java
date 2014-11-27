@@ -5,6 +5,8 @@ package de.hochschuletrier.dormapp.common;
  */
 public class Constants {
 
+    public static final String TAG_PREFIX = "de.hochschuletrier.dormapp.";
+
     public static final int ACTIVITY_RESULT_OK = 1;
     public static final int ACTIVITY_RESULT_ERROR = -1;
 

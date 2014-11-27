@@ -21,6 +21,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import de.hochschuletrier.dbconnectionlib.constants.Constants;
+import de.hochschuletrier.dbconnectionlib.constants.EnumSqLite;
 import de.hochschuletrier.dbconnectionlib.functions.UserHandler;
 import de.hochschuletrier.dbconnectionlib.helper.AuthCredentials;
 
@@ -31,7 +32,7 @@ import de.hochschuletrier.dbconnectionlib.helper.AuthCredentials;
  */
 public class LoginActivity extends Activity {
 
-    public static final String TAG = MainActivity.TAG_PREFIX + "LoginActivity";
+    public static final String TAG = Constants.TAG_PREFIX + "LoginActivity";
     /**
      * A dummy authentication store containing known user names and passwords.
      * TODO: remove after connecting to a real authentication system.
@@ -44,9 +45,9 @@ public class LoginActivity extends Activity {
     /**
      * The default email to populate the email field with.
      */
-    public static final String EXTRA_EMAIL = MainActivity.TAG_PREFIX + "LoginActivit.extra.EMAIL";
-    private static final String EXTRA_SUCCESS = MainActivity.TAG_PREFIX + "LoginActivit.extra.SUCCESS";
-    private static final String EXTRA_ERROR = MainActivity.TAG_PREFIX + "LoginActivit.extra.ERROR";
+    public static final String EXTRA_EMAIL = Constants.TAG_PREFIX + "LoginActivit.extra.EMAIL";
+    private static final String EXTRA_SUCCESS = Constants.TAG_PREFIX + "LoginActivit.extra.SUCCESS";
+    private static final String EXTRA_ERROR = Constants.TAG_PREFIX + "LoginActivit.extra.ERROR";
 
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
@@ -303,18 +304,18 @@ public class LoginActivity extends Activity {
         @Override
         protected void onPostExecute(JSONObject json) {
             try {
-                if (json != null && json.getString(Constants.KEY_SUCCESS) != null) {
+                if (json != null && json.getString(Constants.JSON_SUCCESS) != null) {
                     Intent upanel = new Intent(getApplicationContext(), MainActivity.class);
                     upanel.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    String res = json.getString(Constants.KEY_SUCCESS);
+                    String res = json.getString(Constants.JSON_SUCCESS);
                     if (Integer.parseInt(res) == 1) {
 /*                        pDialog.setMessage("Loading User Space");
                         pDialog.setTitle("Getting Data");*/
 
                         JSONObject json_user = json.getJSONObject("user");
                         
-                        AuthCredentials creds = new AuthCredentials(json_user.getString(Constants.KEY_UID),
-                                                        json_user.getString(Constants.KEY_USERNAME), mPassword);
+                        AuthCredentials creds = new AuthCredentials(json_user.getString(EnumSqLite.KEY_UID.getName()),
+                                                        json_user.getString(EnumSqLite.KEY_USERNAME.getName()), mPassword);
                             creds.setEmail(mEmail);
 
                         userFunction.storeCredentials(MainActivity.getSecPrefs(), creds);

@@ -31,9 +31,9 @@
 
 package de.hochschuletrier.dormapp.common;
 
+import android.app.Fragment;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;

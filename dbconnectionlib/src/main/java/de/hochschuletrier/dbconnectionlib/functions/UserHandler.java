@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hochschuletrier.dbconnectionlib.constants.ConnectionConstants;
-import de.hochschuletrier.dbconnectionlib.constants.Constants;
+import de.hochschuletrier.dbconnectionlib.constants.EnumSqLite;
 import de.hochschuletrier.dbconnectionlib.helper.AuthCredentials;
 import de.hochschuletrier.dbconnectionlib.helper.JSONParser;
 
@@ -90,7 +90,7 @@ public class UserHandler {
 /*    public boolean logoutUser(final SecurePreferences secPrefs)
     {
         // TODO change logout routine
-        DatabaseHandler db = new DatabaseHandler(context);
+        SQLiteDatabaseHandler db = new SQLiteDatabaseHandler(context);
         db.resetTables();
         resetCredentials(context);
         return true;
@@ -114,10 +114,10 @@ public class UserHandler {
 
         Editor secPrefEditor = secPrefs.edit();
         secPrefEditor.clear();
-        secPrefEditor.putString(Constants.KEY_UID, _creds.getUid());
-        secPrefEditor.putString(Constants.KEY_USERNAME, _creds.getUname() != null ? _creds.getUname() : _creds.getEmail());
-        secPrefEditor.putString(Constants.KEY_PASSWORD, _creds.getPassword());
-        secPrefEditor.putString(Constants.KEY_EMAIL, _creds.getEmail());
+        secPrefEditor.putString(EnumSqLite.KEY_UID.getName(), _creds.getUid());
+        secPrefEditor.putString(EnumSqLite.KEY_USERNAME.getName(), _creds.getUname() != null ? _creds.getUname() : _creds.getEmail());
+        secPrefEditor.putString(EnumSqLite.KEY_PASSWORD.getName(), _creds.getPassword());
+        secPrefEditor.putString(EnumSqLite.KEY_EMAIL.getName(), _creds.getEmail());
         secPrefEditor.commit();
 
 /*        almost obsolete method
@@ -128,7 +128,7 @@ public class UserHandler {
         prefEditor.putString(Constants.KEY_USERNAME, creds.getUname());
         prefEditor.putString(Constants.KEY_PASSWORD, creds.getPassword());
         prefEditor.putString(Constants.KEY_EMAIL, creds.getEmail());
-        prefEditor.putString(Constants.KEY_FIRSTNAME, creds.getFirstname());
+        prefEditor.putString(Constants.KEY_FORENAME, creds.getFirstname());
         prefEditor.putString(Constants.KEY_LASTNAME, creds.getLastname());
         prefEditor.commit();
         */
@@ -137,10 +137,10 @@ public class UserHandler {
     public static AuthCredentials loggedInUser(final SecurePreferences secPrefs) {
         String uid = null, uname = null, upassword = null, email = null;
         if (!secPrefs.getAll().isEmpty()) {
-            uid = secPrefs.getString(Constants.KEY_UID, null);
-            uname = secPrefs.getString(Constants.KEY_USERNAME, null);
-            upassword = secPrefs.getString(Constants.KEY_PASSWORD, null);
-            email = secPrefs.getString(Constants.KEY_EMAIL, null);
+            uid = secPrefs.getString(EnumSqLite.KEY_UID.getName(), null);
+            uname = secPrefs.getString(EnumSqLite.KEY_USERNAME.getName(), null);
+            upassword = secPrefs.getString(EnumSqLite.KEY_PASSWORD.getName(), null);
+            email = secPrefs.getString(EnumSqLite.KEY_EMAIL.getName(), null);
         }
         if (uid != null & upassword != null & email != null ) {
             AuthCredentials creds = new AuthCredentials(uid, email, upassword);

@@ -3,7 +3,7 @@
 
     <string name="app_name">DBConnectionLib</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="placeholder">Diese Oberfläche sollten Sie niemals angezeigt bekommen! \nSollten Sie dennoch diesen Text lesen, einfach den Back-Button klicken ;)</string>
+    <string name="action_insertIntoLocal">InsertIntoLocalDBTest</string>
 
 </resources>

@@ -11,7 +11,6 @@ public class ConnectionConstants {
     public static final String WRITE_URL = SYNC_URL;
     public static final String WRITE_TAG = "write";
 
-
     // URL of the PHP API
     public static final String LOGIN_URL = "http://app1.raschel.org/tp/php/login.php";
     public static final String LOGIN_TAG = "login";

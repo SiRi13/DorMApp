@@ -28,11 +28,8 @@
             android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>
 
-        <activity
-            android:name="de.hochschuletrier.dormapp.BlackboardFragmentActivity"
-            android:label="@string/title_sectionBlackboard">
-        </activity>
-
+        <service android:name="de.hochschuletrier.dormapp.messenger.MessengerService" android:exported="true" />
+        <service android:name="de.hochschuletrier.dormapp.MainActivity$ReplyService" android:exported="false" />
     </application>
 
 </manifest>

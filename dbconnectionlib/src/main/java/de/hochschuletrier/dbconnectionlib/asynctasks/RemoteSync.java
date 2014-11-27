@@ -9,8 +9,8 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-import de.hochschuletrier.dbconnectionlib.functions.DatabaseHandler;
 import de.hochschuletrier.dbconnectionlib.functions.RemoteHandler;
+import de.hochschuletrier.dbconnectionlib.functions.SQLiteDatabaseHandler;
 import de.hochschuletrier.dbconnectionlib.functions.UserHandler;
 import de.hochschuletrier.dbconnectionlib.helper.AuthCredentials;
 
@@ -20,7 +20,7 @@ import de.hochschuletrier.dbconnectionlib.helper.AuthCredentials;
 public abstract class RemoteSync extends AsyncTask<Object, Object, JSONObject> {
 
     protected final Context context;
-    protected final DatabaseHandler dbHandler;
+    protected final SQLiteDatabaseHandler dbHandler;
     protected final UserHandler userFunctions;
     protected final RemoteHandler remoteFunctions;
     protected final SecurePreferences secPrefs;
@@ -30,7 +30,7 @@ public abstract class RemoteSync extends AsyncTask<Object, Object, JSONObject> {
         this.context = _context;
         this.creds = _creds;
         this.secPrefs = _secPrefs;
-        this.dbHandler = new DatabaseHandler(_context);
+        this.dbHandler = new SQLiteDatabaseHandler(_context);
         this.userFunctions = new UserHandler();
         this.remoteFunctions = new RemoteHandler();
     }

@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import de.hochschuletrier.dbconnectionlib.asynctasks.RemoteSync;
+import de.hochschuletrier.dbconnectionlib.constants.EnumSqLite;
 import de.hochschuletrier.dbconnectionlib.helper.AuthCredentials;
 import de.hochschuletrier.dormapp.MainActivity;
 import de.hochschuletrier.dormapp.R;
@@ -75,31 +76,32 @@ public class InitAppSync extends RemoteSync {
     @Override
     protected void onPostExecute(JSONObject jsonObject) {
         try {
-            if (jsonObject != null && jsonObject.getString(de.hochschuletrier.dbconnectionlib.constants.Constants.KEY_SUCCESS) != null) {
-                String res = jsonObject.getString(de.hochschuletrier.dbconnectionlib.constants.Constants.KEY_SUCCESS);
+            if (jsonObject != null && jsonObject.getString(de.hochschuletrier.dbconnectionlib.constants.Constants.JSON_SUCCESS) != null) {
+                String res = jsonObject.getString(de.hochschuletrier.dbconnectionlib.constants.Constants.JSON_SUCCESS);
                 if (Integer.parseInt(res) >= 1)
                 {
                     JSONArray json_array = jsonObject.getJSONArray("result");
                     /**
                      * Clear all previous data in SQlite database.
                      **/
-                    dbHandler.dropTable(de.hochschuletrier.dbconnectionlib.constants.Constants.TABLE_INIT_APP);
+                    dbHandler.clearTable(EnumSqLite.TABLE_OVERVIEW.getName());
 
                     JSONObject json_data = json_array.getJSONObject(0);
-                    String[] columns = new String[]{ de.hochschuletrier.dbconnectionlib.constants.Constants.KEY_UID, de.hochschuletrier.dbconnectionlib.constants.Constants.KEY_FIRSTNAME,
-                            de.hochschuletrier.dbconnectionlib.constants.Constants.KEY_CHORES, de.hochschuletrier.dbconnectionlib.constants.Constants.KEY_GROCERIES_COUNT,
-                            de.hochschuletrier.dbconnectionlib.constants.Constants.KEY_CALENDAR_COUNT, de.hochschuletrier.dbconnectionlib.constants.Constants.KEY_BLACKBOARD_COUNT,
-                            de.hochschuletrier.dbconnectionlib.constants.Constants.KEY_CREATED_AT};
-                    ArrayList<Object> values = new ArrayList<Object>();
-                    values.add(json_data.getString(de.hochschuletrier.dbconnectionlib.constants.Constants.KEY_UID));
-                    values.add(json_data.getString(de.hochschuletrier.dbconnectionlib.constants.Constants.KEY_FIRSTNAME));
-                    values.add(json_data.getString(de.hochschuletrier.dbconnectionlib.constants.Constants.KEY_CHORES));
-                    values.add(json_data.getString(de.hochschuletrier.dbconnectionlib.constants.Constants.KEY_GROCERIES_COUNT));
-                    values.add(json_data.getString(de.hochschuletrier.dbconnectionlib.constants.Constants.KEY_BLACKBOARD_COUNT));
-                    values.add(json_data.getString(de.hochschuletrier.dbconnectionlib.constants.Constants.KEY_CALENDAR_COUNT));
-                    values.add(json_data.getString(de.hochschuletrier.dbconnectionlib.constants.Constants.KEY_CREATED_AT));
+                    String[] columns = new String[]{ EnumSqLite.KEY_UID.getName(), EnumSqLite.KEY_FORENAME.getName(),
+                            EnumSqLite.KEY_CHORES.getName(), EnumSqLite.KEY_GROCERIES_COUNT.getName(),
+                            EnumSqLite.KEY_CALENDAR_COUNT.getName(), EnumSqLite.KEY_BLACKBOARD_COUNT.getName(),
+                            EnumSqLite.KEY_CREATED_AT.getName()};
 
-                    dbHandler.addRow(de.hochschuletrier.dbconnectionlib.constants.Constants.TABLE_INIT_APP, columns, values.toArray());
+                    ArrayList<Object> values = new ArrayList<Object>();
+                    values.add(json_data.getString(EnumSqLite.KEY_UID.getName()));
+                    values.add(json_data.getString(EnumSqLite.KEY_FORENAME.getName()));
+                    values.add(json_data.getString(EnumSqLite.KEY_CHORES.getName()));
+                    values.add(json_data.getString(EnumSqLite.KEY_GROCERIES_COUNT.getName()));
+                    values.add(json_data.getString(EnumSqLite.KEY_BLACKBOARD_COUNT.getName()));
+                    values.add(json_data.getString(EnumSqLite.KEY_CALENDAR_COUNT.getName()));
+                    values.add(json_data.getString(EnumSqLite.KEY_CREATED_AT.getName()));
+
+                    dbHandler.addRow(EnumSqLite.TABLE_OVERVIEW.getName(), columns, values.toArray());
 
                     this.publishProgress(values.toArray());
                 }

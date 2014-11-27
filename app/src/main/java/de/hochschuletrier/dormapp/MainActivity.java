@@ -9,11 +9,19 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.Service;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
@@ -29,17 +37,18 @@ import java.util.List;
 import java.util.Locale;
 
 import de.hochschuletrier.dbconnectionlib.constants.ConnectionConstants;
+import de.hochschuletrier.dbconnectionlib.constants.EnumViews;
 import de.hochschuletrier.dbconnectionlib.functions.UserHandler;
 import de.hochschuletrier.dbconnectionlib.helper.AuthCredentials;
 import de.hochschuletrier.dormapp.common.Constants;
 import de.hochschuletrier.dormapp.common.InitAppSync;
 import de.hochschuletrier.dormapp.common.Log;
-import de.hochschuletrier.dormapp.common.LogFragment;
+import de.hochschuletrier.dormapp.common.MessageConstants;
+import de.hochschuletrier.dormapp.messenger.MessengerService;
 
 public class MainActivity extends Activity implements ActionBar.TabListener {
 
-    public static final String TAG_PREFIX = "de.hochschuletrier.dormapp.";
-    public static final String TAG = TAG_PREFIX + "MainActivity";
+    private final String TAG = Constants.TAG_PREFIX + getClass().getName();
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a {@link android.support.v13.app.FragmentPagerAdapter}
@@ -54,12 +63,6 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
      */
     ViewPager mViewPager;
 
-    /**
-     * Reference to the fragment showing events, so we can clear it with a button
-     * as necessary.
-     */
-    private LogFragment mLogFragment;
-
     public static AuthCredentials loggedIn;
 
     public static SecurePreferences getSecPrefs() {
@@ -67,6 +70,57 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
     }
 
     protected static SecurePreferences secPrefs;
+
+    private Messenger mService = null;
+
+    private Messenger reService = new Messenger(new ReplyIncomingHandler());
+
+    private boolean mBound = false;
+
+/*    private void sendMessage(int _msgCommand, Runnable _callBack) {
+        if (mBound) {
+            Message msg = Message.obtain(_msgCommand, _callBack);
+            try {
+                mService.send(msg);
+            } catch (RemoteException rex) {
+                Log.e(TAG, "RemoteException:" +rex.getLocalizedMessage());
+                rex.printStackTrace();
+            }
+        }
+    }*/
+
+    private void sendMessage(Messenger _service, Message _msg) {
+        try {
+            _service.send(_msg);
+        } catch (RemoteException rex) {
+            Log.e(TAG, "RemoteException: " + rex.getLocalizedMessage());
+            rex.printStackTrace();
+        }
+    }
+
+    private void sendMessage(int _msgCommand) {
+        if (mBound) {
+            Message msg = Message.obtain(null, _msgCommand);
+            if (loggedIn != null && !loggedIn.isEmpty()) {
+                msg.setData(loggedIn.getAuthBundle());
+            }
+            sendMessage(mService, msg);
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // bind messenger service
+        bindService(new Intent(this, MessengerService.class), mConnection, Context.BIND_AUTO_CREATE);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // unbind messenger service
+        unbindService(mConnection);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,6 +176,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
             initLogin();
         }
         else {
+            // s/b logged in
             // ... sync for init ( e.g. who, what chores or new entries )
             InitAppSync initApp = new InitAppSync(this, getSecPrefs(), loggedIn);
             // create params to put as post-request payload
@@ -129,7 +184,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
             postParams.add(new BasicNameValuePair("tag", ConnectionConstants.SYNC_TAG));
             postParams.add(new BasicNameValuePair("email", loggedIn.getEmail()));
             postParams.add(new BasicNameValuePair("password", loggedIn.getPassword()));
-            postParams.add(new BasicNameValuePair("table", de.hochschuletrier.dbconnectionlib.constants.Constants.VIEW_INIT_APP));
+            postParams.add(new BasicNameValuePair("table", EnumViews.VIEW_OVERVIEW.getName()));
 
             initApp.execute(postParams);
         }
@@ -166,10 +221,11 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
             case R.id.itmLogin:
                 initLogin();
                 break;
-//            case R.id.itmSettings:
-//                intent = new Intent(this, R.layout.fra);
-//                startActivity(intent);
-//                break;
+            case R.id.itmTest:
+//                Toast.makeText(this, "No Test ATM", Toast.LENGTH_LONG).show();
+//                saveToDb();
+                sendMessage(MessageConstants.MSG_SAY_HELLO);
+                break;
             case R.id.itemSync:
                 initApp();
                 break;
@@ -259,6 +315,10 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
     // END_INCLUDE(connect)
 
 
+    /*
+    * Inner Classes For MainActiviy
+    *
+    * */
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
@@ -300,6 +360,55 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
 
             }
             return null;
+        }
+    }
+
+    private ServiceConnection mConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder binder) {
+            Log.i(TAG, "service bound");
+            mService = new Messenger(binder);
+            mBound = true;
+            Message msg = Message.obtain(null, MessageConstants.MSG_REBIND);
+            msg.replyTo = reService;
+            sendMessage(mService, msg);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            Log.i(TAG, "service unbound");
+            Message msg = Message.obtain(null, MessageConstants.MSG_UNREBIND);
+            sendMessage(mService, msg);
+            mService = null;
+            mBound = false;
+        }
+    };
+
+    public class ReplyService extends Service {
+
+        private final String TAG = Constants.TAG_PREFIX + getClass().getName();
+
+        @Override
+        public IBinder onBind(Intent intent) {
+            Log.v(TAG, "ReplyService binding");
+            return reService.getBinder();
+        }
+    }
+
+    public class ReplyIncomingHandler extends Handler {
+        public static final String TAG = Constants.TAG_PREFIX + "IncomingHandler";
+
+        @Override
+        public void handleMessage(Message msg) {
+            // TODO
+            switch (msg.what) {
+                case MessageConstants.MSG_SAY_HELLO:
+                    Toast.makeText(getApplicationContext(), "reply from service", Toast.LENGTH_LONG).show();
+
+                    break;
+                default:
+                    super.handleMessage(msg);
+            }
         }
     }
 }

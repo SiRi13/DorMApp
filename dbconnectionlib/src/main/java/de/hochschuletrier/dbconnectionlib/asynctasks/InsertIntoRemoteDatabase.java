@@ -2,8 +2,11 @@ package de.hochschuletrier.dbconnectionlib.asynctasks;
 
 /**
  * Created by simon on 11/16/14.
+ *
+ * OBSOLETE (should be :E)
  */
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -21,14 +24,14 @@ import de.hochschuletrier.dbconnectionlib.functions.RemoteHandler;
 import de.hochschuletrier.dbconnectionlib.functions.UserHandler;
 import de.hochschuletrier.dbconnectionlib.helper.AuthCredentials;
 
-public class InsertIntoLocalDatabase extends AsyncTask<BasicNameValuePair, Void, JSONObject>
+public class InsertIntoRemoteDatabase extends AsyncTask<BasicNameValuePair, Void, JSONObject>
 {
     private ProgressDialog pDialog;
     private Context appContext;
     private SecurePreferences secPrefs;
     private AuthCredentials creds;
 
-    public InsertIntoLocalDatabase(Context context, final SecurePreferences secPrefs, AuthCredentials creds)
+    public InsertIntoRemoteDatabase(Context context, final SecurePreferences secPrefs, AuthCredentials creds)
     {
         this.appContext = context;
         this.creds = creds;
@@ -45,6 +48,19 @@ public class InsertIntoLocalDatabase extends AsyncTask<BasicNameValuePair, Void,
         pDialog.setIndeterminate(false);
         pDialog.setCancelable(true);
         pDialog.show();
+    }
+
+    @Override
+    protected void onProgressUpdate(Void... values) {
+        super.onProgressUpdate(values);
+        final Activity activity = (Activity) appContext;
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                SyncRemoteDatabase queryTask = new SyncRemoteDatabase(activity, secPrefs, creds);
+                queryTask.execute(Constants.TABLE_TEST);
+            }
+        });
     }
 
     @Override
@@ -69,10 +85,10 @@ public class InsertIntoLocalDatabase extends AsyncTask<BasicNameValuePair, Void,
             keys.append(String.format("`%s`, ", params[i].getName()));
             vals.append(String.format("'%s', ", params[i].getValue()));
         }
-        keys.append(String.format("`%s`", Constants.KEY_UID));
+        keys.append(String.format("`%s`", "uid"));
         vals.append(String.format("'%s'", String.valueOf(creds.getUid())));
 
-        Log.i("InsertIntoDB.doInBackground", "keys: " + keys.toString() + "; vals: " + vals.toString());
+        Log.i("InsertIntoLocalDB.doInBackground", "keys: " + keys.toString() + "; vals: " + vals.toString());
         JSONObject result = remoteFunctions.insertIntoRemoteTable(creds, table_name, keys.toString(), vals.toString());
         return result;
     }
@@ -83,12 +99,13 @@ public class InsertIntoLocalDatabase extends AsyncTask<BasicNameValuePair, Void,
         String toastText = "Something went terrible wrong :(";
         try
         {
-            if (json != null && json.getString(Constants.KEY_SUCCESS) != null)
+            if (json != null && json.getString(Constants.JSON_SUCCESS) != null)
             {
-                String res = json.getString(Constants.KEY_SUCCESS);
+                String res = json.getString(Constants.JSON_SUCCESS);
                 if (Integer.parseInt(res) > 0)
                 {
                     toastText = "Everything went as expected \n Data successfully transferred";
+                    this.publishProgress();
                 }
             }
         }

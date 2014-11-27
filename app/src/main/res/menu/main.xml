@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <!--     <item android:id="@+id/itmSettings" android:title="@string/action_settings" android:menuCategory="system" android:showAsAction="never"></item> -->
+    <item android:id="@+id/itmTest" android:title="@string/action_test" android:menuCategory="system" />
     <item android:id="@+id/itmLogin" android:title="@string/action_login" />
     <item android:id="@+id/itemSync" android:title="@string/action_sync" />
 

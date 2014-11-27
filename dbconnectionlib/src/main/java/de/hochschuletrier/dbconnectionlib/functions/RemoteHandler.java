@@ -25,8 +25,7 @@ public class RemoteHandler {
     /**
      * Function to query Remote Table
      */
-    public JSONObject syncRemoteTable(AuthCredentials creds, String table)
-    {
+    public JSONObject syncRemoteTable(AuthCredentials creds, String table) {
         List<BasicNameValuePair> params = new ArrayList<BasicNameValuePair>();
         params.add(new BasicNameValuePair("tag", ConnectionConstants.SYNC_TAG));
         params.add(new BasicNameValuePair("email", creds.getEmail()));
@@ -41,8 +40,7 @@ public class RemoteHandler {
         return json;
     }
 
-    public JSONObject insertIntoRemoteTable(AuthCredentials creds, String table_name, String culmns, String vals)
-    {
+    public JSONObject insertIntoRemoteTable(AuthCredentials creds, String table_name, String culmns, String vals) {
         List<BasicNameValuePair> params = new ArrayList<BasicNameValuePair>();
         params.add(new BasicNameValuePair("tag", ConnectionConstants.WRITE_TAG));
         params.add(new BasicNameValuePair("table", table_name));
