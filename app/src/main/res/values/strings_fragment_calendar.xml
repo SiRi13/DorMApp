@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="textKalender">Kalender</string>
+    <string name="btnSync">Sync</string>
+    <string name="btnNeuerTermin">Neuer Termin</string>
+    <string name="btnTerminLoeschen">Termin Löschen</string>
+    <string name="btnSpeichern">Speichern</string>
+    <string name="btnDiscard">Verwerfen</string>
+    
+</resources>

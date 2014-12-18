@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relLayshoppingList"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <EditText
+        android:hint="@string/textNeuerArtikel"
+        android:id="@+id/editTxtShoppingListNewItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="false"
+        android:layout_gravity="left"
+        android:layout_toLeftOf="@+id/imgButtonShoppingListItemAdd"
+        android:ems="10"
+        android:inputType="text|textCapWords|textAutoComplete"
+        android:layout_alignParentBottom="true">
+
+        <requestFocus />
+    </EditText>
+
+    <ImageButton
+        android:contentDescription="@string/btnAddContentDesc"
+        android:id="@+id/imgButtonShoppingListItemAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="false"
+        android:layout_gravity="right"
+        android:text="@string/btnHinzufuegenEinkaufsliste"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/ic_input_add" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/editTxtShoppingListNewItem">
+
+        <include
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            layout="@layout/view_shopping_list"
+            android:id="@+id/lvShoppingList" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

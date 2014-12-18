@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relLayFragBuyItem"
+    style="@style/AppBaseTheme"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" >
+
+    <TextView
+        android:id="@+id/txtViewBuyItemText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/textPreisAngeben"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <Space
+        android:id="@+id/space1"
+        android:layout_width="wrap_content"
+        android:layout_height="13dp"
+        android:layout_below="@+id/txtViewBuyItemText"
+        android:layout_toRightOf="@+id/txtViewBuyItemName" />
+
+    <TextView
+        android:id="@+id/txtViewBuyItemName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/space1"
+        android:layout_centerHorizontal="true"
+        android:text="@string/textPlatzhalter"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <Space
+        android:id="@+id/space2"
+        android:layout_width="wrap_content"
+        android:layout_height="13dp"
+        android:layout_below="@+id/txtViewBuyItemName" />
+
+    <EditText
+        android:id="@+id/editTxtBuyItemPrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/space2"
+        android:layout_toLeftOf="@+id/imgButtonBuyItemAdd"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        android:gravity="end" >
+
+        <requestFocus />
+    </EditText>
+
+    <Button
+        android:id="@+id/imgButtonBuyItemAdd"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/editTxtBuyItemPrice"
+        android:layout_alignParentRight="true"
+        android:text="@string/btnKaufen" />
+
+</RelativeLayout>

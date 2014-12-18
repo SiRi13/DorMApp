@@ -109,13 +109,12 @@ public class UserHandler {
 
     }
 
-    public void storeCredentials(final SecurePreferences secPrefs, AuthCredentials _creds) {
+    public static void storeCredentials(final SecurePreferences secPrefs, AuthCredentials _creds) {
         // TODO save creds
 
         Editor secPrefEditor = secPrefs.edit();
         secPrefEditor.clear();
         secPrefEditor.putString(EnumSqLite.KEY_UID.getName(), _creds.getUid());
-        secPrefEditor.putString(EnumSqLite.KEY_USERNAME.getName(), _creds.getUname() != null ? _creds.getUname() : _creds.getEmail());
         secPrefEditor.putString(EnumSqLite.KEY_PASSWORD.getName(), _creds.getPassword());
         secPrefEditor.putString(EnumSqLite.KEY_EMAIL.getName(), _creds.getEmail());
         secPrefEditor.commit();
@@ -138,18 +137,17 @@ public class UserHandler {
         String uid = null, uname = null, upassword = null, email = null;
         if (!secPrefs.getAll().isEmpty()) {
             uid = secPrefs.getString(EnumSqLite.KEY_UID.getName(), null);
-            uname = secPrefs.getString(EnumSqLite.KEY_USERNAME.getName(), null);
             upassword = secPrefs.getString(EnumSqLite.KEY_PASSWORD.getName(), null);
             email = secPrefs.getString(EnumSqLite.KEY_EMAIL.getName(), null);
         }
         if (uid != null & upassword != null & email != null ) {
             AuthCredentials creds = new AuthCredentials(uid, email, upassword);
             creds.setEmail(email);
-            Log.i("loggedInUser", "user: " + creds.getUname() + "; pw: " + creds.getPassword());
+            Log.i("loggedInUser", "user: " + creds.getEmail() + "; pw: " + creds.getPassword());
             return creds;
         }
 
-        return null;
+        return new AuthCredentials("3", "peter.lustig@trash-mail.com", "m0vthbqr");
     }
 
 

@@ -16,9 +16,9 @@
 
 package com.securepreferences.util;
 
-import java.io.UnsupportedEncodingException;
-
 import android.util.Base64OutputStream;
+
+import java.io.UnsupportedEncodingException;
 
 /**
  * Utilities for encoding and decoding the Base64 representation of

@@ -12,4 +12,8 @@
 	<string name="action_sync">Sync</string>
     <string name="action_login">Login</string>
     <string name="action_test">Test</string>
+
+    <string name="contentDescUserPic">Bild des Benutzers</string>
+    <string name="contentDescBtnDelete">Eintrag löschen</string>
+
 </resources>

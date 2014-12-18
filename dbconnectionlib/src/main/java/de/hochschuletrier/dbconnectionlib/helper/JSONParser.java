@@ -19,11 +19,15 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
+import de.hochschuletrier.dbconnectionlib.constants.Constants;
+
 /**
  * Created by simon on 11/16/14.
  */
 public class JSONParser
 {
+    private final String TAG = Constants.TAG_PREFIX + getClass().getName();
+
     static InputStream is = null;
 
     static JSONObject jObj = null;
@@ -71,7 +75,7 @@ public class JSONParser
             }
             is.close();
             json = sb.toString();
-            Log.i("JSON", json);
+            Log.i("JSON", "url: " + url + "; json: \n" + json);
         }
         catch (Exception e)
         {
@@ -91,6 +95,13 @@ public class JSONParser
         {
             Log.e("JSON Parser", "Error parsing data " + e.toString());
         }
+
+/*        try {
+            Log.v(TAG, "Sleep(1000);");
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }*/
         // return JSON String
         return jObj;
     }

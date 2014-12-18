@@ -24,6 +24,7 @@ import de.hochschuletrier.dbconnectionlib.constants.Constants;
 import de.hochschuletrier.dbconnectionlib.constants.EnumSqLite;
 import de.hochschuletrier.dbconnectionlib.functions.UserHandler;
 import de.hochschuletrier.dbconnectionlib.helper.AuthCredentials;
+import de.hochschuletrier.dormapp.common.Log;
 
 
 /**
@@ -216,47 +217,41 @@ public class LoginActivity extends Activity {
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    public class UserLoginTask extends AsyncTask<Void, Boolean, Boolean> {
+
+        public ProcessLogin procLogin;
+
         @Override
-        protected Boolean doInBackground(Void... params) {
+        protected void onPreExecute() {
             // attempt authentication against a network service.
-            ProcessLogin procLogin = new ProcessLogin();
+            procLogin = new ProcessLogin();
             procLogin.execute();
 
-            if (procLogin.isCancelled()) {
-                // show toast to register new account here.
-                Toast.makeText(getApplicationContext(),
-                "Zum Registrieren bitte mit dem Verwalter der WG Kontakt aufnehmen.",
-                Toast.LENGTH_LONG).show();
-                resultIntent.putExtra(EXTRA_ERROR, "Zum Registrieren bitte mit dem Verwalter der WG Kontakt aufnehmen.");
-                setResult(de.hochschuletrier.dormapp.common.Constants.ACTIVITY_RESULT_ERROR, resultIntent);
-                return false;
-            }
-            
-            return true;
-            
-/*
- * former code example from google to simulate authentication
-            try
-            {
-                // Simulate network access.
-                Thread.sleep(2000);
-            }
-            catch (InterruptedException e)
-            {
-                return false;
-            }
-            for (String credential : DUMMY_CREDENTIALS)
-            {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail))
-                {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+
+            while (!procLogin.isCancelled()) {
+                if (procLogin.getStatus() == AsyncTask.Status.FINISHED) {
+                    return true;
                 }
             }
- */
-            
+
+            publishProgress(false);
+            return false;
+        }
+
+        @Override
+        protected void onProgressUpdate(Boolean... values) {
+            if (!values[0]) {
+                // show toast to register new account here.
+                Toast.makeText(getApplicationContext(),
+                        "Zum Registrieren bitte mit dem Verwalter der WG Kontakt aufnehmen.",
+                        Toast.LENGTH_LONG).show();
+                resultIntent.putExtra(EXTRA_ERROR, "Zum Registrieren bitte mit dem Verwalter der WG Kontakt aufnehmen.");
+                setResult(de.hochschuletrier.dormapp.common.Constants.ACTIVITY_RESULT_ERROR, resultIntent);
+            }
         }
 
         @Override
@@ -283,16 +278,26 @@ public class LoginActivity extends Activity {
             showProgress(false);
         }
     }
+
     /**
      * Async Task to get and send data to My Sql database through JSON response.
      **/
-    private class ProcessLogin extends AsyncTask<String, Boolean, JSONObject> {
+    public class ProcessLogin extends AsyncTask<String, Boolean, JSONObject> {
 //        private ProgressDialog pDialog;
         private UserHandler userFunction = new UserHandler();
         
         @Override
         protected JSONObject doInBackground(String... args) {
             JSONObject json = userFunction.loginUser(mEmail, mPassword);
+
+            try {
+                // simulate long server response time
+                Thread.sleep(2000);
+            } catch (InterruptedException ie) {
+                Log.e(TAG, "InterruptedException:" + ie.getLocalizedMessage());
+                ie.printStackTrace();
+            }
+
             return json;
         }
         
@@ -305,18 +310,15 @@ public class LoginActivity extends Activity {
         protected void onPostExecute(JSONObject json) {
             try {
                 if (json != null && json.getString(Constants.JSON_SUCCESS) != null) {
-                    Intent upanel = new Intent(getApplicationContext(), MainActivity.class);
-                    upanel.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    Intent resultIntent = new Intent(getApplicationContext(), MainActivity.class);
+                    resultIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     String res = json.getString(Constants.JSON_SUCCESS);
                     if (Integer.parseInt(res) == 1) {
-/*                        pDialog.setMessage("Loading User Space");
-                        pDialog.setTitle("Getting Data");*/
 
                         JSONObject json_user = json.getJSONObject("user");
                         
                         AuthCredentials creds = new AuthCredentials(json_user.getString(EnumSqLite.KEY_UID.getName()),
-                                                        json_user.getString(EnumSqLite.KEY_USERNAME.getName()), mPassword);
-                            creds.setEmail(mEmail);
+                                                        mEmail, mPassword);
 
                         userFunction.storeCredentials(MainActivity.getSecPrefs(), creds);
 
@@ -324,37 +326,19 @@ public class LoginActivity extends Activity {
                         creds = new AuthCredentials("", "", "");
                         mPassword = "";
                         
-                        /**
-                         * If JSON array details are stored in SQlite it
-                         * launches the User Panel.
-                         * 
-                         * pDialog.dismiss();
-                         * 
-                         * 
-                         * startActivity(upanel);
-                         * 
-                         * 
-                         **/
-                        
-                        /**
-                         * Close Login Screen
-                         * 
-                         * finish();
-                         **/
-                        
                     }
                     else {
-                        upanel.putExtra(Constants.LOGIN_RESULT, Boolean.FALSE);
-                        upanel.putExtra(Constants.LOGIN_MESSAGE, "Your credentials are invalid! or something else, idk :3");
+                        resultIntent.putExtra(Constants.LOGIN_RESULT, Boolean.FALSE);
+                        resultIntent.putExtra(Constants.LOGIN_MESSAGE, "Something went pretty wrong :O I am very sorry!");
                         this.cancel(true);
-/*                        pDialog.dismiss();
-                        startActivity(upanel);
-                        finish();*/
                     }
                 }
             }
             catch (JSONException e) {
                 e.printStackTrace();
+            }
+            finally {
+                setResult(de.hochschuletrier.dormapp.common.Constants.ACTIVITY_RESULT_ERROR, resultIntent);
             }
         }
     }

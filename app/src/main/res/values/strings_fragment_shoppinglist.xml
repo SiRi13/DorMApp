@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="textNeuerArtikel">Neuer Artikel</string>
+    <string name="btnHinzufuegenEinkaufsliste">Hinzufügen</string>
+    <string name="btnLoeschenEinkaufsliste">Löschen</string>
+    <string name="btnKaufen">Kaufen</string>
+    <string name="textPlatzhalter">Platzhalter</string>
+    <string name="textPreisAngeben">Preis für folgenden Artikel angeben:</string>
+    <string name="PlaceholderShoppingList">Platzhalter Shopping List</string>
+    <string name="txtViewShoppingListUnitPieces">Stück</string>
+    <string name="txtShoppingListAmount">Anzahl</string>
+    <string name="txtItemName">Artikelname:</string>
+    <string name="txtShoppingListUnit">Einheit</string>
+    <string name="hintShoppingListAmount">Anzahl eingeben</string>
+    <string name="hintShoppingListUnit">Einheit bestimmen</string>
+    <string name="hintShoppingListPrice">Bezahlten Preis angeben</string>
+    <string name="txtShoppingListPrice">Preis:</string>
+    <string name="chkBoxTxtToBill">Verrechnen?</string>
+
+</resources>

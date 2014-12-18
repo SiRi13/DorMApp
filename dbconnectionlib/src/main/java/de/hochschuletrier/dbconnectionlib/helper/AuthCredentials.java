@@ -13,17 +13,15 @@ public class AuthCredentials implements Parcelable{
 
     private String uid;
 
-    private String uname;
-
     private String password;
 
     private String firstname, lastname;
     private String email;
     private String crea;
 
-    public AuthCredentials(String uid, String uname, final String password) {
+    public AuthCredentials(String uid, String email, final String password) {
         this.uid = uid;
-        this.uname = uname;
+        this.email = email;
         this.password = password;
     }
 
@@ -31,18 +29,7 @@ public class AuthCredentials implements Parcelable{
         Bundle authBundle = in.readBundle();
         setUid(authBundle.getString(EnumSqLite.KEY_UID.getName()));
         setPassword(authBundle.getString(EnumSqLite.KEY_PASSWORD.getName()));
-        setUname(authBundle.getString(EnumSqLite.KEY_USERNAME.getName()));
         setEmail(authBundle.getString(EnumSqLite.KEY_EMAIL.getName()));
-    }
-
-    public String getUname()
-    {
-        return uname;
-    }
-
-    public void setUname(String uname)
-    {
-        this.uname = uname;
     }
 
     public String getPassword()
@@ -115,7 +102,6 @@ public class AuthCredentials implements Parcelable{
         retBund.putString(EnumSqLite.KEY_UID.getName(), getUid());
         retBund.putString(EnumSqLite.KEY_EMAIL.getName(), getEmail());
         retBund.putString(EnumSqLite.KEY_PASSWORD.getName(), getPassword());
-        retBund.putString(EnumSqLite.KEY_USERNAME.getName(), getUname());
         return retBund;
     }
 

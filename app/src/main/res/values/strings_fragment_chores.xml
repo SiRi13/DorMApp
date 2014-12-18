@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="textPutzplan">Putzplan</string>
+    <string name="btnErledigt">Erledigt</string>
+
+    <string name="PlaceholderPutzplanRow">Platzhalter Zeile</string>
+    <string name="txtPutzplanErledigenBis">Erledigen Bis:</string>
+    <string name="txtPutzplanAufgabe">Aufgabe</string>
+    <string name="txtPutzplanVerwantwortlicher">Verantwortlicher</string>
+
+</resources>

@@ -13,4 +13,6 @@ public class Constants {
     public static final int BLACKBOARD_ACTIVITY_REQUEST_CODE = 0;
     public static final int LOGIN_ACTIVITY_REQUEST_CODE = 1;
 
+    public static final int LOADER_OVERVIEW = 10;
+
 }

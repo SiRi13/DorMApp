@@ -4,12 +4,12 @@
     <string name="btnLoeschenBlackboard">Löschen</string>
     <string name="textNeuerEintrag">Neuer Blackboard-Eintrag</string>
     
-    
     <!-- edit -->
     <string name="textBlackboardEditHint">Eintrag bearbeiten</string>
-    <string-array name="arrayTestMsgs">
-        <item >erste Nachricht</item>
-        <item >zweite Nachricht</item>
-    </string-array>
-        <string name="RowDelete">Löschen</string>
+    <string name="RowDelete">Löschen</string>
+    <string name="txtPlaceholderBlackboard">Platzhalter Text</string>
+    <string name="hintBlackboardNachricht">Neue Nachricht</string>
+    <string name="btnAddContentDesc">Neuen Eintrag hinzufügen</string>
+    <string name="txtBlackboardEditText">Hier kannst du den Text bearbeiten:</string>
+
 </resources>
