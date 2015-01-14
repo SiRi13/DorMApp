@@ -86,6 +86,8 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
 
     private boolean mBound = false;
 
+    public int counter;
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -145,6 +147,8 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
             actionBar.addTab(actionBar.newTab().setText(mSectionsPagerAdapter.getPageTitle(i)).setTabListener(this));
         }
 
+        counter = 0;
+
     }
 
     @Override
@@ -187,25 +191,14 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
 //                Toast.makeText(this, "No Test ATM", Toast.LENGTH_LONG).show();
 //                saveToDb();
 //                syncDynData();
-                showDialog(null);
+//                showDialog(null);
+                refreshTest();
                 break;
             default:
                 return true;
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private void syncDynData() {
-        Bundle bundle = new Bundle();
-        if (loggedIn == null || loggedIn.isEmpty()) {
-            loggedIn = UserHandler.loggedInUser(getSecPrefs());
-        }
-        bundle.putParcelable(de.hochschuletrier.dbconnectionlib.constants.Constants.KEY_CREDENTIALS, loggedIn);
-        Message msg = Message.obtain(null, MessageConstants.MSG_DYN_DATA_SYNC);
-        msg.setData(bundle);
-        Log.d(TAG, "sendMessage( MSG_DYN_DATA_SYNC )");
-        sendMessage(mService, msg);
     }
 
     @Override
@@ -217,36 +210,27 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
 
     @Override
     public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-        // TODO
         fragmentTransaction.remove(mSectionsPagerAdapter.getItem(tab.getPosition()));
     }
 
     @Override
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-        // TODO
+        // EMPTY
 
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case Constants.BLACKBOARD_ACTIVITY_REQUEST_CODE:
-                if (resultCode == Constants.ACTIVITY_RESULT_OK) {
-                    // TODO
-                }
-                else if (resultCode == Constants.ACTIVITY_RESULT_ERROR) {
-                    // TODO SOMETHING HAPPENED
-                }
-                break;
-
             case Constants.LOGIN_ACTIVITY_REQUEST_CODE:
                 if (resultCode == Constants.ACTIVITY_RESULT_OK) {
                     // TODO
                     initSync();
-                    this.recreate();
+//                    this.recreate();
                 }
                 else if (resultCode == Constants.ACTIVITY_RESULT_ERROR) {
                     // TODO SOMETHING HAPPENED
+                    // clearDataBase();
                 }
                 break;
 
@@ -287,6 +271,45 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
 * Basic Methods
 * */
 
+    private void refreshTest() {
+        if (counter++ > 4) {
+            recreate();
+        }
+
+
+
+/*        FragmentTransaction fragTx = fragMngr.beginTransaction();
+        Fragment oFrag = new OverviewFragment();
+        fragTx.replace(R.layout.fragment_main, oFrag);
+        fragTx.addToBackStack(null);
+        fragTx.commit();*/
+
+//        mSectionsPagerAdapter.notifyDataSetChanged();
+        /*BlackboardFragment blackboardFrag = (BlackboardFragment) mSectionsPagerAdapter.getItem(3);
+        Assert.assertNotNull(blackboardFrag);
+
+        if ( blackboardFrag == null) {
+            blackboardFrag = BlackboardFragment.getInstance();
+        }
+        if (blackboardFrag != null) {
+            blackboardFrag.bbAdapter.notifyDataSetChanged();
+            blackboardFrag.bbAdapter.notifyDataSetInvalidated();
+        }*/
+
+    }
+
+    private void syncDynData() {
+        Bundle bundle = new Bundle();
+        if (loggedIn == null || loggedIn.isEmpty()) {
+            loggedIn = UserHandler.loggedInUser(getSecPrefs());
+        }
+        bundle.putParcelable(de.hochschuletrier.dbconnectionlib.constants.Constants.KEY_CREDENTIALS, loggedIn);
+        Message msg = Message.obtain(null, MessageConstants.MSG_DYN_DATA_SYNC);
+        msg.setData(bundle);
+        Log.d(TAG, "sendMessage( MSG_DYN_DATA_SYNC )");
+        sendMessage(mService, msg);
+    }
+
     private void initApp() {
         // get logged in user creds if there are any
         MainActivity.loggedIn =  UserHandler.loggedInUser(getSecPrefs());
@@ -296,7 +319,10 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
             // ... if not goto login fragment
             initLogin();
         }
-
+        else {
+            // TODO only dynamic data sync
+            initSync();
+        }
         mSectionsPagerAdapter.notifyDataSetChanged();
     }
 
@@ -376,6 +402,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
         RemoveDialogFragment newFragement = new RemoveDialogFragment().newInstance("Dialog to fire missiles...", "Fire missiles?", "FIRE!");
         newFragement.show(fragMngr, ItemBuyDialogFragment.FRAGMENT_TAG);
     }
+
 /*
 * Getter and Setter for MainActivity
 * */
@@ -386,7 +413,6 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
 
 /*
 * Inner Classes For MainActiviy
-*
 * */
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
@@ -488,22 +514,31 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
                     break;
                 case MessageConstants.MSG_BLACKBOARD_SYNC_DONE:
                     Log.d(TAG, "Reply from SyncService: BlackboardSync done!");
-                    BlackboardFragment bbFrag = (BlackboardFragment) mSectionsPagerAdapter.getItem(3);
-                    ((EditText) bbFrag.getView().findViewById(R.id.editTextBlackboardNewMessage)).setText("");
-                    bbFrag.bbAdapter.notifyDataSetChanged();
+                    BlackboardFragment bbFrag = BlackboardFragment.getInstance();
+                    if (bbFrag != null) {
+                        bbFrag.onResume();
+                        ((EditText) bbFrag.getView().findViewById(R.id.editTextBlackboardNewMessage)).setText("");
+                        bbFrag.bbAdapter.notifyDataSetChanged();
+                    }
                     mSectionsPagerAdapter.notifyDataSetChanged();
                     break;
                 case MessageConstants.MSG_INIT_SYNC_LOCAL_DONE:
                     Log.d(TAG, "Reply from SyncService via Message LocalSync done");
                     break;
                 case MessageConstants.MSG_INIT_SYNC_DONE:
-                    Log.d(TAG, "Reply from SyncService via Message all done");
+//                    MainActivity.instance.recreate();
                     mSectionsPagerAdapter.notifyDataSetChanged();
+                    Log.d(TAG, "Reply from SyncService via Message all done");
                     break;
                 case MessageConstants.MSG_COMMIT_LOCAL_DONE:
                     int arg1 = msg.arg1;
                     Message reMsg;
                     switch (arg1) {
+                        case MessageConstants.MSG_COMMIT_SHOPPING_LIST_ITEM_ADD:
+                        case MessageConstants.MSG_COMMIT_SHOPPING_LIST_ITEM_BOUGHT:
+                        case MessageConstants.MSG_COMMIT_SHOPPING_LIST_ITEM_REMOVE:
+                            MainActivity.this.sendMessage(MessageConstants.MSG_DYN_DATA_SYNC);
+                            break;
                         case MessageConstants.MSG_COMMIT_BLACKBOARD_EDIT:
                         case MessageConstants.MSG_COMMIT_BLACKBOARD_REMOVE:
                         case MessageConstants.MSG_COMMIT_BLACKBOARD_ADD:

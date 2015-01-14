@@ -75,7 +75,7 @@ public class JSONParser
             }
             is.close();
             json = sb.toString();
-            Log.i("JSON", "url: " + url + "; json: \n" + json);
+            Log.i("JSON", "url: " + url + ";\n params: " + params + ";\n json: " + json);
         }
         catch (Exception e)
         {

@@ -16,5 +16,8 @@
     <string name="hintShoppingListPrice">Bezahlten Preis angeben</string>
     <string name="txtShoppingListPrice">Preis:</string>
     <string name="chkBoxTxtToBill">Verrechnen?</string>
+    <string name="txtGroceryName">Warenbezeichnung</string>
+    <string name="txtGroceryPreis">Preis:</string>
+    <string name="txtGroceryItemAdd">Neue Ware anlegen</string>
 
 </resources>

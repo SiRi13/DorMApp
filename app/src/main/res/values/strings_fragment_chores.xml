@@ -8,4 +8,13 @@
     <string name="txtPutzplanAufgabe">Aufgabe</string>
     <string name="txtPutzplanVerwantwortlicher">Verantwortlicher</string>
 
+    <string name="txtPutzplanKeineSchritte">Keine Schritte</string>
+    <string name="textChoreStepSaved">Aufgabenschritt gespeichert</string>
+
+    <string-array name="arrayChoreSteps">
+        <item>item one</item>
+        <item>item two</item>
+        <item>item three</item>
+        <item>item four</item>
+    </string-array>
 </resources>

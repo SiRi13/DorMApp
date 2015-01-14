@@ -12,6 +12,7 @@ public class ConnectionConstants {
     public static final String WRITE_TAG = "write";
 
     public static final String COMMIT_CHORE_DONE_TAG = "commitChoreDone";
+    public static final String COMMIT_CHORE_STEP_DONE_TAG = "commitChoreStepDone";
 
     public static final String COMMIT_BLACKBOARD_MESSAGE_REMOVE_TAG = "commitBlackboardMessageRemove";
     public static final String COMMIT_BLACKBOARD_MESSAGE_ADD_TAG = "commitBlackboardMessageAdd";

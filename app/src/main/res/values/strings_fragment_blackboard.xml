@@ -11,5 +11,7 @@
     <string name="hintBlackboardNachricht">Neue Nachricht</string>
     <string name="btnAddContentDesc">Neuen Eintrag hinzufügen</string>
     <string name="txtBlackboardEditText">Hier kannst du den Text bearbeiten:</string>
+    <string name="textBlackboardMessageUndone">Nachricht wurde wieder hergestellt.</string>
+    <string name="textBlackboardDeleted">Nachricht entfernt</string>
 
 </resources>

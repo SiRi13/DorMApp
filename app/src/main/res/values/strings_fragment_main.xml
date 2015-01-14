@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="textHallo">Hallo %s</string>
+    <string name="textHalloWildcard">Hallo %s!</string>
+    <string name="textHallo">Hallo!</string>
     <string name="textDuBistDran">Du bist dran mit %s</string>
     <string name="textDuHastFrei">Du hast diese Woche frei :)</string>
-    <string name="textNeuerEintragEinkaufsliste">Es gibt einen neuen Eintrag auf der Einkaufsliste.</string>
-    <string name="textNeueEintraegeEinkaufsliste">Es gibt %s neue Einträge auf der Einkaufsliste.</string>
-    <string name="textNeuerEintragBlackboard">Es gibt einen neuen Eintrag auf dem Blackboard.</string>
-    <string name="textNeueEintraegeBlackboard">Es gibt %s neue Einträge auf dem Blackboard.</string>
-    <string name="textNeuerEintragKalender">Es gibt einen neuen Eintrag im Kalender.</string>
-    <string name="textNeueEintraegeKalender">Es gibt %s neue Einträge im Kalender.</string>
+    <string name="textNeuerEintragEinkaufsliste">Es gibt einen Eintrag auf der Einkaufsliste.</string>
+    <string name="textNeueEintraegeEinkaufsliste">Es gibt %s Einträge auf der Einkaufsliste.</string>
+    <string name="textNeuerEintragBlackboard">Es gibt einen Eintrag auf dem Blackboard.</string>
+    <string name="textNeueEintraegeBlackboard">Es gibt %s Einträge auf dem Blackboard.</string>
+    <string name="textNeuerEintragKalender">Es gibt einen Eintrag im Kalender.</string>
+    <string name="textNeueEintraegeKalender">Es gibt %s Einträge im Kalender.</string>
     
-    <string name="textKeinNeuerEintragEinkaufsliste">Es gibt keinen neuen Eintrag auf der Einkaufsliste.</string>
-    <string name="textKeinNeuerEintragBlackboard">Es gibt keinen neuen Eintrag auf dem Blackboard.</string>
-    <string name="textKeinNeuerEintragKalender">Es gibt keinen neuen Eintrag im Kalender.</string>
+    <string name="textKeinNeuerEintragEinkaufsliste">Es gibt keinen Eintrag auf der Einkaufsliste.</string>
+    <string name="textKeinNeuerEintragBlackboard">Es gibt keinen Eintrag auf dem Blackboard.</string>
+    <string name="textKeinNeuerEintragKalender">Es gibt keinen Eintrag im Kalender.</string>
 </resources>

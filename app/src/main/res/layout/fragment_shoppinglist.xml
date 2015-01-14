@@ -16,7 +16,8 @@
         android:layout_toLeftOf="@+id/imgButtonShoppingListItemAdd"
         android:ems="10"
         android:inputType="text|textCapWords|textAutoComplete"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:visibility="gone">
 
         <requestFocus />
     </EditText>
@@ -33,16 +34,34 @@
         android:layout_alignParentBottom="true"
         android:src="@drawable/ic_input_add" />
 
+    <AutoCompleteTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/autoCompleteShoppingListNewItem"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/imgButtonShoppingListItemAdd"
+        android:layout_toStartOf="@+id/imgButtonShoppingListItemAdd"
+        android:layout_below="@+id/relativeLayout2"
+        android:hint="@string/textNeuerArtikel"
+        android:completionThreshold="2"
+        android:inputType="text|textCapWords|textAutoComplete" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/editTxtShoppingListNewItem">
+        android:layout_above="@+id/imgButtonShoppingListItemAdd"
+        android:id="@+id/relativeLayout2">
 
         <include
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             layout="@layout/view_shopping_list"
-            android:id="@+id/lvShoppingList" />
+            android:id="@+id/lvShoppingList"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
     </RelativeLayout>
 
