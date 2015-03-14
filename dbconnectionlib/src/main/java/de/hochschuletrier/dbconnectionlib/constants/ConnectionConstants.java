@@ -6,6 +6,7 @@ package de.hochschuletrier.dbconnectionlib.constants;
 public class ConnectionConstants {
 
     public static final String SYNC_URL = "http://test.app1.raschel.org/php/db.php";
+//    public static String SYNC_URL = "http://localhost/php/db.php";
     public static final String SYNC_TAG = "sync";
 
     public static final String WRITE_URL = SYNC_URL;
@@ -26,6 +27,7 @@ public class ConnectionConstants {
 
     // URL of the PHP API
     public static final String LOGIN_URL = "http://test.app1.raschel.org/php/login.php";
+//    public static String LOGIN_URL = "http://localhost/php/login.php";
     public static final String LOGIN_TAG = "login";
 
     /*public static final String REGISTER_URL = loginUrl;

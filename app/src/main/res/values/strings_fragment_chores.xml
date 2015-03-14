@@ -10,6 +10,7 @@
 
     <string name="txtPutzplanKeineSchritte">Keine Schritte</string>
     <string name="textChoreStepSaved">Aufgabenschritt gespeichert</string>
+    <string name="contentDescChkBoxChoreDone">Aufgabe abgeschlossen</string>
 
     <string-array name="arrayChoreSteps">
         <item>item one</item>

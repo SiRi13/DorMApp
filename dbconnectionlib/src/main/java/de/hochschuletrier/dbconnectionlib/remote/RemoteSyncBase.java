@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 
 import de.hochschuletrier.dbconnectionlib.constants.Constants;
 import de.hochschuletrier.dbconnectionlib.constants.EnumSqLite;
@@ -40,12 +41,24 @@ public abstract class RemoteSyncBase extends AsyncTask<Object, Message, JSONObje
     protected Map<EnumSqLite, List<SqlTableRow>> local_tables;
     protected EnumViews[] tablesToSync;
 
+    protected final CountDownLatch signal;
+
     public RemoteSyncBase(Context _context, AuthCredentials _creds) {
         this.context = _context;
         this.creds = _creds;
-        this.localHandler = new LocalHandler(_context);
+        this.localHandler = new LocalHandler(this.context);
         this.userFunctions = new UserHandler();
         this.remoteFunctions = new RemoteHandler();
+        this.signal = null;
+    }
+
+    protected RemoteSyncBase(Context _context, AuthCredentials _creds, CountDownLatch _signal) {
+        this.context = _context;
+        this.creds = _creds;
+        this.localHandler = new LocalHandler(this.context);
+        this.userFunctions = new UserHandler();
+        this.remoteFunctions = new RemoteHandler();
+        this.signal = _signal;
     }
 
     protected void onProgressUpdate(Message _msg) {
@@ -96,6 +109,7 @@ public abstract class RemoteSyncBase extends AsyncTask<Object, Message, JSONObje
         JSONObject[] retObjs = new JSONObject[] {};
         if ((tableNames != null && tableNames.length == 1) & !isCancelled()) {
             Log.i(TAG, " table_name: " + tableNames[0].toString());
+            retObjs = new JSONObject[1];
             retObjs[0] = remoteFunctions.readRemoteTable(creds, tableNames[0].toString());
         } else if ((tableNames != null && tableNames.length > 1) & !isCancelled()) {
             List<String> tables = new ArrayList<String>();
@@ -148,5 +162,5 @@ public abstract class RemoteSyncBase extends AsyncTask<Object, Message, JSONObje
             local_tables.put(enumViews.getSqLite(), tmpTable);
             tmpTable = new ArrayList<SqlTableRow>();
         }
-    };
+    }
 }

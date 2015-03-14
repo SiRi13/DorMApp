@@ -9,39 +9,41 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:weightSum="10"
+    android:weightSum="8"
     tools:context="de.hstrier.livingcommunity.LoginActivity$PlaceholderFragment" >
 
     <TextView
-        android:id="@+id/txtViewBuyItemName"
+        android:id="@+id/txtViewWelcome"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
         android:layout_weight="2.2"
+        android:text="@string/textHallo"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
-        android:id="@+id/txtViewBuyItemText"
+        android:id="@+id/txtViewChoreTodo"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="15dp"
         android:layout_weight="1.8"
-        android:text="@string/textDuHastFrei"
+        android:text="@string/textZuerstAnmelden"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:longClickable="true" />
 
     <TextView
-        android:id="@+id/textViewMainGroceries"
+        android:id="@+id/txtViewMainGroceries"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
         android:layout_weight="2"
         android:clickable="true"
         android:text="@string/textKeinNeuerEintragEinkaufsliste"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:visibility="invisible" />
 
-    <TextView
+<!--    <TextView
         android:id="@+id/textViewMainCalendar"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
@@ -49,16 +51,17 @@
         android:layout_weight="2"
         android:clickable="true"
         android:text="@string/textKeinNeuerEintragKalender"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textAppearance="?android:attr/textAppearanceLarge" />-->
 
     <TextView
-        android:id="@+id/textViewMainBlackboard"
+        android:id="@+id/txtViewMainBlackboard"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
         android:layout_weight="2"
         android:clickable="true"
         android:text="@string/textKeinNeuerEintragBlackboard"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:visibility="invisible" />
 
 </LinearLayout>

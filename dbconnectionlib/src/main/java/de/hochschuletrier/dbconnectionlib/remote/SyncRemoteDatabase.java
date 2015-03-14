@@ -90,7 +90,7 @@ public class SyncRemoteDatabase extends RemoteSync {
                         */
 /*dbHandler.addRow(json_data.getInt("uid"), json_data.getString(Constants.KEY_TEST_STRING), json_data.getInt(Constants.KEY_TEST_INT), json_data.getString(EnumSqLite.KEY_CREATED_AT.getName()));*//*
 
-                        String[] columns = new String[] { EnumSqLite.KEY_UID.getName(), EnumSqLite.KEY_FORENAME.getName(), EnumSqLite.KEY_CHORES.getName(), EnumSqLite.KEY_CALENDAR_COUNT.getName(), EnumSqLite.KEY_GROCERIES_COUNT.getName(), EnumSqLite.KEY_BLACKBOARD_COUNT.getName(), EnumSqLite.KEY_CREATED_AT.getName() };
+                        String[] columns = new String[] { EnumSqLite.KEY_UID.getName(), EnumSqLite.KEY_FORENAME.getName(), EnumSqLite.KEY_CHORE_UPCOMING.getName(), EnumSqLite.KEY_CALENDAR_COUNT.getName(), EnumSqLite.KEY_GROCERIES_COUNT.getName(), EnumSqLite.KEY_BLACKBOARD_COUNT.getName(), EnumSqLite.KEY_CREATED_AT.getName() };
                         String test_string = json_data.getString(Constants.KEY_TEST_STRING);
                         String test_int = json_data.getString(Constants.KEY_TEST_INT);
                         Object[] values = new Object[] { json_data.getString("uid"), test_string, test_string, test_int, test_int, test_int, json_data.getString("created_at") };

@@ -24,7 +24,6 @@ import de.hochschuletrier.dbconnectionlib.constants.Constants;
 import de.hochschuletrier.dbconnectionlib.constants.EnumSqLite;
 import de.hochschuletrier.dbconnectionlib.functions.UserHandler;
 import de.hochschuletrier.dbconnectionlib.helper.AuthCredentials;
-import de.hochschuletrier.dormapp.common.Log;
 
 
 /**
@@ -116,6 +115,13 @@ public class LoginActivity extends Activity {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.login, menu);
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
+        finish();
+//        super.onBackPressed();
     }
 
     /**
@@ -285,22 +291,22 @@ public class LoginActivity extends Activity {
     public class ProcessLogin extends AsyncTask<String, Boolean, JSONObject> {
 //        private ProgressDialog pDialog;
         private UserHandler userFunction = new UserHandler();
-        
+
         @Override
         protected JSONObject doInBackground(String... args) {
             JSONObject json = userFunction.loginUser(mEmail, mPassword);
-
+/*
             try {
                 // simulate long server response time
                 Thread.sleep(2000);
             } catch (InterruptedException ie) {
                 Log.e(TAG, "InterruptedException:" + ie.getLocalizedMessage());
                 ie.printStackTrace();
-            }
+            }*/
 
             return json;
         }
-        
+
         @Override
         protected void onCancelled() {
             super.onCancelled();
@@ -316,7 +322,7 @@ public class LoginActivity extends Activity {
                     if (Integer.parseInt(res) == 1) {
 
                         JSONObject json_user = json.getJSONObject("user");
-                        
+
                         AuthCredentials creds = new AuthCredentials(json_user.getString(EnumSqLite.KEY_UID.getName()),
                                                         mEmail, mPassword);
 
@@ -325,7 +331,7 @@ public class LoginActivity extends Activity {
                         json_user = new JSONObject();
                         creds = new AuthCredentials("", "", "");
                         mPassword = "";
-                        
+
                     }
                     else {
                         resultIntent.putExtra(Constants.LOGIN_RESULT, Boolean.FALSE);

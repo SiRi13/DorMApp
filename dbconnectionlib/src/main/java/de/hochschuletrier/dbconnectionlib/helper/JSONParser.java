@@ -96,13 +96,6 @@ public class JSONParser
             Log.e("JSON Parser", "Error parsing data " + e.toString());
         }
 
-/*        try {
-            Log.v(TAG, "Sleep(1000);");
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
-        // return JSON String
         return jObj;
     }
 }

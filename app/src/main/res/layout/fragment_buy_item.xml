@@ -7,7 +7,7 @@
     android:orientation="horizontal" >
 
     <TextView
-        android:id="@+id/txtViewBuyItemText"
+        android:id="@+id/txtViewPreisAngeben"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/textPreisAngeben"
@@ -17,11 +17,11 @@
         android:id="@+id/space1"
         android:layout_width="wrap_content"
         android:layout_height="13dp"
-        android:layout_below="@+id/txtViewBuyItemText"
-        android:layout_toRightOf="@+id/txtViewBuyItemName" />
+        android:layout_below="@+id/txtViewPreisAngeben"
+        android:layout_toRightOf="@+id/txtViewItemName" />
 
     <TextView
-        android:id="@+id/txtViewBuyItemName"
+        android:id="@+id/txtViewItemName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/space1"
@@ -33,7 +33,7 @@
         android:id="@+id/space2"
         android:layout_width="wrap_content"
         android:layout_height="13dp"
-        android:layout_below="@+id/txtViewBuyItemName" />
+        android:layout_below="@+id/txtViewItemName" />
 
     <EditText
         android:id="@+id/editTxtBuyItemPrice"

@@ -4,7 +4,6 @@ android {
     compileSdkVersion 19
     buildToolsVersion '19.1.0'
     defaultConfig {
-//        applicationId "de.hochschuletrier.dbconnectionlib"
         minSdkVersion 14
         targetSdkVersion 19
         versionCode 1

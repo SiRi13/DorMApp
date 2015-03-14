@@ -28,7 +28,6 @@
             android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>
 
-        <service android:name="de.hochschuletrier.dbconnectionlib.messenger.MessengerService" android:exported="false" />
         <service android:name="de.hochschuletrier.dormapp.MainActivity$ReplyService" android:exported="false" />
     </application>
 

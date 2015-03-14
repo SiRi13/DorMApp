@@ -15,5 +15,9 @@
 
     <string name="contentDescUserPic">Bild des Benutzers</string>
     <string name="contentDescBtnDelete">Eintrag löschen</string>
+    <string name="contentDescChkdTextViewChoreStep">Aufgabenschritt abgeschlossen</string>
+    <string name="textZuerstAnmelden">Bitte melde dich zuerst über das Einstellungsmenü an.</string>
+    <string name="textItemUndo">Eintrag wiederherstellen</string>
+    <string name="action_logout">Logout</string>
 
 </resources>

@@ -67,42 +67,7 @@ public class UserHandler {
         return json;
     }
 
-    /**
-     * Function to Register
-     **/
-/*    public JSONObject registerUser(String fname, String lname, String email, String uname, String password)
-    {
-        // Building Parameters
-        List<BasicNameValuePair> params = new ArrayList<BasicNameValuePair>();
-        params.add(new BasicNameValuePair("tag", registerTag));
-        params.add(new BasicNameValuePair("fname", fname));
-        params.add(new BasicNameValuePair("lname", lname));
-        params.add(new BasicNameValuePair("email", email));
-        params.add(new BasicNameValuePair("uname", uname));
-        params.add(new BasicNameValuePair("password", password));
-        JSONObject json = jsonParser.getJSONFromUrl(registerUrl, params);
-        return json;
-    }*/
-    /**
-     * Function to logout user Resets the temporary data stored in SQLite
-     * Database
-     * */
-/*    public boolean logoutUser(final SecurePreferences secPrefs)
-    {
-        // TODO change logout routine
-        SQLiteDatabaseHandler db = new SQLiteDatabaseHandler(context);
-        db.resetTables();
-        resetCredentials(context);
-        return true;
-    }*/
-
     public void resetCredentials(final SecurePreferences secPrefs) {
-        // TODO reset creds
-/*        final SharedPreferences prefs = context.getSharedPreferences(Constants.KEY_CREDENTIALS, Context.MODE_PRIVATE);
-        Editor prefEditor = prefs.edit();
-        prefEditor.clear();
-        prefEditor.commit();*/
-
         Editor secPrefEditor = secPrefs.edit();
         secPrefEditor.clear();
         secPrefEditor.commit();
@@ -110,32 +75,20 @@ public class UserHandler {
     }
 
     public static void storeCredentials(final SecurePreferences secPrefs, AuthCredentials _creds) {
-        // TODO save creds
-
         Editor secPrefEditor = secPrefs.edit();
         secPrefEditor.clear();
         secPrefEditor.putString(EnumSqLite.KEY_UID.getName(), _creds.getUid());
         secPrefEditor.putString(EnumSqLite.KEY_PASSWORD.getName(), _creds.getPassword());
         secPrefEditor.putString(EnumSqLite.KEY_EMAIL.getName(), _creds.getEmail());
         secPrefEditor.commit();
-
-/*        almost obsolete method
-        final SharedPreferences prefs = context.getSharedPreferences(Constants.KEY_CREDENTIALS, Context.MODE_PRIVATE);
-        final Editor prefEditor = prefs.edit();
-        prefEditor.clear();
-        prefEditor.putInt(Constants.KEY_UID, creds.getUid());
-        prefEditor.putString(Constants.KEY_USERNAME, creds.getUname());
-        prefEditor.putString(Constants.KEY_PASSWORD, creds.getPassword());
-        prefEditor.putString(Constants.KEY_EMAIL, creds.getEmail());
-        prefEditor.putString(Constants.KEY_FORENAME, creds.getFirstname());
-        prefEditor.putString(Constants.KEY_LASTNAME, creds.getLastname());
-        prefEditor.commit();
-        */
     }
 
     public static AuthCredentials loggedInUser(final SecurePreferences secPrefs) {
         String uid = null, uname = null, upassword = null, email = null;
-        if (!secPrefs.getAll().isEmpty()) {
+        if (secPrefs.contains(EnumSqLite.KEY_EMAIL.getName())
+                & secPrefs.contains(EnumSqLite.KEY_PASSWORD.getName())
+                & secPrefs.contains(EnumSqLite.KEY_UID.getName())) {
+
             uid = secPrefs.getString(EnumSqLite.KEY_UID.getName(), null);
             upassword = secPrefs.getString(EnumSqLite.KEY_PASSWORD.getName(), null);
             email = secPrefs.getString(EnumSqLite.KEY_EMAIL.getName(), null);
@@ -147,7 +100,7 @@ public class UserHandler {
             return creds;
         }
 
-        return new AuthCredentials("3", "peter.lustig@trash-mail.com", "m0vthbqr");
+        return null;
     }
 
 

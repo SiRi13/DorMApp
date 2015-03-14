@@ -38,6 +38,7 @@ import de.hochschuletrier.dbconnectionlib.constants.EnumSqLite;
 import de.hochschuletrier.dbconnectionlib.constants.MessageConstants;
 import de.hochschuletrier.dbconnectionlib.functions.UserHandler;
 import de.hochschuletrier.dbconnectionlib.helper.AuthCredentials;
+import de.hochschuletrier.dbconnectionlib.helper.SQLiteDatabaseHandler;
 import de.hochschuletrier.dbconnectionlib.messenger.MessengerService;
 import de.hochschuletrier.dormapp.common.Constants;
 import de.hochschuletrier.dormapp.common.Log;
@@ -93,6 +94,12 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
         super.onStart();
         // bind messenger service
         bindService(new Intent(this, MessengerService.class), mConnection, Context.BIND_AUTO_CREATE);
+
+        // get logged in user creds if there are any
+        if (secPrefs == null) {
+            secPrefs = new SecurePreferences(getApplicationContext());
+        }
+        MainActivity.loggedIn =  UserHandler.loggedInUser(secPrefs);
     }
 
     @Override
@@ -108,11 +115,6 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
         setContentView(R.layout.activity_main);
 
         instance = this;
-
-        // create new securePreferences if not there
-        if (secPrefs == null) {
-            secPrefs = new SecurePreferences(this);
-        }
 
         // Set up the action bar.
         final ActionBar actionBar = getActionBar();
@@ -156,7 +158,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
         super.onPause();
 
         if (loggedIn != null && !loggedIn.isEmpty()) {
-            UserHandler.storeCredentials(secPrefs, loggedIn);
+            UserHandler.storeCredentials(getSecPrefs(), loggedIn);
         }
     }
 
@@ -165,6 +167,10 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
         super.onStop();
         // unbind messenger service
         unbindService(mConnection);
+
+        if (loggedIn != null && !loggedIn.isEmpty()) {
+            UserHandler.storeCredentials(getSecPrefs(), loggedIn);
+        }
     }
 
     @Override
@@ -184,15 +190,16 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
             case R.id.itmLogin:
                 initLogin();
                 break;
-            case R.id.itemSync:
+            case R.id.itmSync:
                 initSync();
                 break;
-            case R.id.itmTest:
-//                Toast.makeText(this, "No Test ATM", Toast.LENGTH_LONG).show();
-//                saveToDb();
-//                syncDynData();
-//                showDialog(null);
-                refreshTest();
+            case R.id.itmLogout:
+                if (loggedIn != null) {
+                    (new UserHandler()).resetCredentials(getSecPrefs());
+                    (new SQLiteDatabaseHandler(getApplicationContext())).resetTables();
+                    loggedIn = null;
+                    initLogin();
+                }
                 break;
             default:
                 return true;
@@ -224,9 +231,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
         switch (requestCode) {
             case Constants.LOGIN_ACTIVITY_REQUEST_CODE:
                 if (resultCode == Constants.ACTIVITY_RESULT_OK) {
-                    // TODO
                     initSync();
-//                    this.recreate();
                 }
                 else if (resultCode == Constants.ACTIVITY_RESULT_ERROR) {
                     // TODO SOMETHING HAPPENED
@@ -271,45 +276,6 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
 * Basic Methods
 * */
 
-    private void refreshTest() {
-        if (counter++ > 4) {
-            recreate();
-        }
-
-
-
-/*        FragmentTransaction fragTx = fragMngr.beginTransaction();
-        Fragment oFrag = new OverviewFragment();
-        fragTx.replace(R.layout.fragment_main, oFrag);
-        fragTx.addToBackStack(null);
-        fragTx.commit();*/
-
-//        mSectionsPagerAdapter.notifyDataSetChanged();
-        /*BlackboardFragment blackboardFrag = (BlackboardFragment) mSectionsPagerAdapter.getItem(3);
-        Assert.assertNotNull(blackboardFrag);
-
-        if ( blackboardFrag == null) {
-            blackboardFrag = BlackboardFragment.getInstance();
-        }
-        if (blackboardFrag != null) {
-            blackboardFrag.bbAdapter.notifyDataSetChanged();
-            blackboardFrag.bbAdapter.notifyDataSetInvalidated();
-        }*/
-
-    }
-
-    private void syncDynData() {
-        Bundle bundle = new Bundle();
-        if (loggedIn == null || loggedIn.isEmpty()) {
-            loggedIn = UserHandler.loggedInUser(getSecPrefs());
-        }
-        bundle.putParcelable(de.hochschuletrier.dbconnectionlib.constants.Constants.KEY_CREDENTIALS, loggedIn);
-        Message msg = Message.obtain(null, MessageConstants.MSG_DYN_DATA_SYNC);
-        msg.setData(bundle);
-        Log.d(TAG, "sendMessage( MSG_DYN_DATA_SYNC )");
-        sendMessage(mService, msg);
-    }
-
     private void initApp() {
         // get logged in user creds if there are any
         MainActivity.loggedIn =  UserHandler.loggedInUser(getSecPrefs());
@@ -320,7 +286,6 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
             initLogin();
         }
         else {
-            // TODO only dynamic data sync
             initSync();
         }
         mSectionsPagerAdapter.notifyDataSetChanged();
@@ -501,7 +466,6 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
 
         @Override
         public void handleMessage(Message msg) {
-            // TODO
             switch (msg.what) {
                 case MessageConstants.MSG_SAY_HELLO:
                     Log.d(TAG, "Reply from SyncService via Message");
@@ -526,7 +490,6 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
                     Log.d(TAG, "Reply from SyncService via Message LocalSync done");
                     break;
                 case MessageConstants.MSG_INIT_SYNC_DONE:
-//                    MainActivity.instance.recreate();
                     mSectionsPagerAdapter.notifyDataSetChanged();
                     Log.d(TAG, "Reply from SyncService via Message all done");
                     break;
