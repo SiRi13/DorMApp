@@ -15,6 +15,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -67,17 +68,9 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
 
     public static AuthCredentials loggedIn;
 
-    public static MainActivity getInstance() {
-        return instance;
-    }
-
     protected static MainActivity instance;
 
     protected static SecurePreferences secPrefs;
-
-    public static FragmentManager getFragMngr() {
-        return fragMngr;
-    }
 
     protected static FragmentManager fragMngr;
 
@@ -89,25 +82,10 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
 
     public int counter;
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        // bind messenger service
-        bindService(new Intent(this, MessengerService.class), mConnection, Context.BIND_AUTO_CREATE);
-
-        // get logged in user creds if there are any
-        if (secPrefs == null) {
-            secPrefs = new SecurePreferences(getApplicationContext());
-        }
-        MainActivity.loggedIn =  UserHandler.loggedInUser(secPrefs);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        initApp();
-    }
+    // Whether there is a Wi-Fi connection.
+    private static boolean wifiConnected = false;
+    // Whether there is a mobile connection.
+    private static boolean mobileConnected = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,16 +128,16 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
         }
 
         counter = 0;
-
+        getSecPrefs();
+        initCreds();
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-
-        if (loggedIn != null && !loggedIn.isEmpty()) {
-            UserHandler.storeCredentials(getSecPrefs(), loggedIn);
-        }
+    protected void onStart() {
+        super.onStart();
+        // bind messenger service
+        bindService(new Intent(this, MessengerService.class), mConnection, Context.BIND_AUTO_CREATE);
+        initApp();
     }
 
     @Override
@@ -167,9 +145,24 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
         super.onStop();
         // unbind messenger service
         unbindService(mConnection);
-
         if (loggedIn != null && !loggedIn.isEmpty()) {
             UserHandler.storeCredentials(getSecPrefs(), loggedIn);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (loggedIn != null && !loggedIn.isEmpty()) {
+            (new UserHandler()).resetCredentials(getSecPrefs());
+            SharedPreferences mPrefs = getSharedPreferences(TAG, 0);
+            SharedPreferences.Editor mEditor = mPrefs.edit();
+            mEditor.putString(EnumSqLite.KEY_UID.getName(), loggedIn.getUid());
+            mEditor.putString(EnumSqLite.KEY_EMAIL.getName(), loggedIn.getEmail());
+            mEditor.putString(EnumSqLite.KEY_FORENAME.getName(), loggedIn.getFirstname());
+            mEditor.putString(EnumSqLite.KEY_LASTNAME.getName(), loggedIn.getLastname());
+            mEditor.putString(EnumSqLite.KEY_PASSWORD.getName(), loggedIn.getPassword());
+            mEditor.commit();
         }
     }
 
@@ -231,6 +224,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
         switch (requestCode) {
             case Constants.LOGIN_ACTIVITY_REQUEST_CODE:
                 if (resultCode == Constants.ACTIVITY_RESULT_OK) {
+                    loggedIn = null;
                     initSync();
                 }
                 else if (resultCode == Constants.ACTIVITY_RESULT_ERROR) {
@@ -244,16 +238,10 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
         }
     }
 
-    // BEGIN_INCLUDE(connect)
     /**
      * Check whether the device is connected, and if so, whether the connection
      * is wifi or mobile (it could be something else).
      */
-    // Whether there is a Wi-Fi connection.
-    private static boolean wifiConnected = false;
-    // Whether there is a mobile connection.
-    private static boolean mobileConnected = false;
-
     private void checkNetworkConnection() {
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeInfo = connMgr.getActiveNetworkInfo();
@@ -269,16 +257,32 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
             Log.v(TAG, getString(R.string.no_wifi_or_mobile));
         }
     }
-    // END_INCLUDE(connect)
-
 
 /*
 * Basic Methods
 * */
 
-    private void initApp() {
+    private void initCreds() {
+        SharedPreferences mPrefs = getSharedPreferences(TAG, 0);
+        if (loggedIn == null) {
+            loggedIn = new AuthCredentials(mPrefs.getString(EnumSqLite.KEY_UID.getName(),""),
+                    mPrefs.getString(EnumSqLite.KEY_EMAIL.getName(),""),
+                    mPrefs.getString(EnumSqLite.KEY_PASSWORD.getName(),""));
+            loggedIn.setLastname(mPrefs.getString(EnumSqLite.KEY_LASTNAME.getName(),""));
+            loggedIn.setFirstname(mPrefs.getString(EnumSqLite.KEY_FORENAME.getName(),""));
+
+            if (loggedIn.isEmpty()) {
+                loggedIn = null;
+            }
+            mPrefs.edit().clear().commit();
+        }
+    }
+
+     private void initApp() {
         // get logged in user creds if there are any
-        MainActivity.loggedIn =  UserHandler.loggedInUser(getSecPrefs());
+         if (loggedIn == null) {
+             MainActivity.loggedIn =  UserHandler.loggedInUser(getSecPrefs());
+         }
 
         // check if s/o is logged in ...
         if (loggedIn == null || loggedIn.isEmpty()) {
@@ -372,7 +376,19 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
 * Getter and Setter for MainActivity
 * */
 
+    public static MainActivity getInstance() {
+        return instance;
+    }
+
+    public static FragmentManager getFragMngr() {
+        return fragMngr;
+    }
+
     public static SecurePreferences getSecPrefs() {
+        if (secPrefs == null) {
+            secPrefs = new SecurePreferences(getInstance());
+        }
+
         return secPrefs;
     }
 
